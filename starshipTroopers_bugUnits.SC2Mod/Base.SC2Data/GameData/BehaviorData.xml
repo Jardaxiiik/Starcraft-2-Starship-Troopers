@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CBehaviorJump id="WarriorJump">
+        <InfoFlags index="Hidden" value="1"/>
+        <EditorCategories value="Race:Terran,AbilityorEffectType:Units"/>
+        <TriggerHeightDeltaMin value="0.1"/>
+        <TriggerHeightDeltaMax value="0.1"/>
+        <InitiateRangeUp value="0.1"/>
+        <InitiateRangeDown value="0.1"/>
+        <JumpRangeMax value="4"/>
+        <Mover value="CliffJumper"/>
+        <MoverUp value="RaptorJumpUp2"/>
+        <MoverDown value="RaptorJumpDown2"/>
+        <DurationMoveOut value="0.6"/>
+        <Placeholder value="HotSRaptorPlaceholder"/>
+        <LandAdjustmentUp value="0.1"/>
+        <LandArrivalRange value="0.1"/>
+        <LandCheckRadius value="2"/>
+    </CBehaviorJump>
+</Catalog>

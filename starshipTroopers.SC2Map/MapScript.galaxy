@@ -1,0 +1,727 @@
+//==================================================================================================
+// 
+// Generated Map Script
+// 
+// Name:   Just Another StarCraft II Map
+// 
+//==================================================================================================
+include "TriggerLibs/NativeLib"
+include "TriggerLibs/CampaignLib"
+include "Lib8DAE26A7"
+include "LibF0008B31"
+
+//--------------------------------------------------------------------------------------------------
+// Library: GameData
+//--------------------------------------------------------------------------------------------------
+// Constants
+const int lib4_gv_BugsUnitHandlerId = 0;
+const string lib4_gv_BugsWaveBehavior = "AttackWaveWander";
+
+// Variable Declarations
+bool lib4_gv_IsGameLoopRunning;
+playergroup lib4_gv_PlayerGroup;
+unit lib4_gv_PlanetaryFortress;
+point lib4_gv_PlanetaryFortressPosition;
+
+// Library Initialization
+void lib4_InitVariables ();
+
+//--------------------------------------------------------------------------------------------------
+// Library: GameData
+//--------------------------------------------------------------------------------------------------
+// External Library Initialization
+void lib4_InitLibraries () {
+    libNtve_InitVariables();
+}
+
+// Variable Initialization
+bool lib4_InitVariables_completed = false;
+
+void lib4_InitVariables () {
+    if (lib4_InitVariables_completed) {
+        return;
+    }
+
+    lib4_InitVariables_completed = true;
+
+    lib4_gv_IsGameLoopRunning = true;
+    lib4_gv_PlayerGroup = PlayerGroupEmpty();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+bool lib4_InitLib_completed = false;
+
+void lib4_InitLib () {
+    if (lib4_InitLib_completed) {
+        return;
+    }
+
+    lib4_InitLib_completed = true;
+
+    lib4_InitLibraries();
+    lib4_InitVariables();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library: GameDesign
+//--------------------------------------------------------------------------------------------------
+// Function Declarations
+void lib3_gf_CallDropToMain (string lp_unitType, int lp_unitCount, point lp_point, int lp_player, bool lp_cinematic);
+
+// Trigger Declarations
+trigger lib3_gt_MarauderDeath;
+trigger lib3_gt_CheatVision;
+trigger lib3_gt_CheatMinerals;
+trigger lib3_gt_TradeRestrictions;
+trigger lib3_gt_OutpostDeath;
+
+//--------------------------------------------------------------------------------------------------
+// Library: GameDesign
+//--------------------------------------------------------------------------------------------------
+// External Library Initialization
+void lib3_InitLibraries () {
+    libNtve_InitVariables();
+}
+
+// Functions
+void lib3_gf_CallDropToMain (string lp_unitType, int lp_unitCount, point lp_point, int lp_player, bool lp_cinematic) {
+    // Variable Declarations
+    unit lv_transport;
+
+    // Automatic Variable Declarations
+    int auto209F02F5_n;
+    int auto209F02F5_i;
+
+    // Variable Initialization
+
+    // Implementation
+    if (((lp_unitType == null) || (lp_unitCount <= 0))) {
+        return ;
+    }
+
+    if ((lp_cinematic == true)) {
+        CameraApplyInfo(lp_player, CameraInfoDefault(), 0.0, -1, 10.0, false);
+        CameraPan(lp_player, PointWithOffset(lp_point, 0.0, -2.0), 0.0, -1, 10.0, false);
+        CameraLockInput(lp_player, true);
+        CutsceneFade(false, 0.0, Color(0,0,0), 100.0, PlayerGroupSingle(lp_player), true);
+        libNtve_gf_CinematicMode(true, PlayerGroupAll(), c_transitionDurationDefault);
+    }
+
+    UnitCreate(1, "SpecialOpsDropship", 0, lp_player, PointWithOffset(lp_point, 10.0, -2.0), libNtve_gf_RandomAngle());
+    lv_transport = UnitLastCreated();
+    UnitBehaviorAddPlayer(lv_transport, "DR8TimedLife", lp_player, 1);
+    auto209F02F5_n = lp_unitCount;
+    for (auto209F02F5_i = 1; auto209F02F5_i <= auto209F02F5_n; auto209F02F5_i += 1) {
+        UnitCreate(1, lp_unitType, 0, lp_player, PointFromId(1846770618), libNtve_gf_RandomAngle());
+        UnitPutInTransport(UnitLastCreated(), UnitTransport(lv_transport));
+        UnitPutInTransport(UnitLastCreated(), lv_transport);
+    }
+    UnitIssueOrder(lv_transport, OrderTargetingPoint(AbilityCommand("move", 0), PointWithOffset(lp_point, 0.0, -2.0)), c_orderQueueReplace);
+    UnitIssueOrder(lv_transport, Order(AbilityCommand("SpecOpsDropshipTransport", 1)), c_orderQueueAddToEnd);
+    UnitIssueOrder(lv_transport, OrderTargetingPoint(AbilityCommand("move", 0), PointWithOffset(lp_point, -40.0, -2.0)), c_orderQueueAddToEnd);
+    if ((lp_cinematic == true)) {
+        CameraLookAtUnit(lp_player, lv_transport);
+        Wait(0.5, c_timeGame);
+        CutsceneFade(true, 1.0, Color(0,0,0), 100.0, PlayerGroupSingle(lp_player), true);
+        Wait(5.0, c_timeGame);
+        CameraLookAtUnit(lp_player, null);
+        libNtve_gf_CinematicMode(false, PlayerGroupAll(), c_transitionDurationDefault);
+        CameraApplyInfo(lp_player, CameraInfoDefault(), 2.0, -1, 10.0, false);
+        CameraPan(lp_player, PointWithOffset(lp_point, 0.0, -2.0), 2.0, -1, 10.0, false);
+        CameraLockInput(lp_player, false);
+    }
+    else {
+        Wait(5.5, c_timeGame);
+        UIDisplayMessage(PlayerGroupSingle(lp_player), c_messageAreaChat, (StringExternal("Param/Value/lib_3_61AD901A") + UnitTypeGetName(lp_unitType) + StringExternal("Param/Value/lib_3_5621008F")));
+    }
+}
+
+// Triggers
+//--------------------------------------------------------------------------------------------------
+// Trigger: MarauderDeath
+//--------------------------------------------------------------------------------------------------
+bool lib3_gt_MarauderDeath_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    lib3_gf_CallDropToMain("Marauder_BlackOps", 1, RegionRandomPoint(RegionCircle(lib4_gv_PlanetaryFortressPosition, 5.0)), EventPlayer(), false);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib3_gt_MarauderDeath_Init () {
+    lib3_gt_MarauderDeath = TriggerCreate("lib3_gt_MarauderDeath_Func");
+    TriggerAddEventPlayerEffectUsed(lib3_gt_MarauderDeath, c_playerAny, "MarauderDeath");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: CheatVision
+//--------------------------------------------------------------------------------------------------
+bool lib3_gt_CheatVision_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    VisRevealArea(EventPlayer(), RegionPlayableMap(), 360.0, false);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib3_gt_CheatVision_Init () {
+    lib3_gt_CheatVision = TriggerCreate("lib3_gt_CheatVision_Func");
+    TriggerAddEventChatMessage(lib3_gt_CheatVision, c_playerAny, "cheatvision", true);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: CheatMinerals
+//--------------------------------------------------------------------------------------------------
+bool lib3_gt_CheatMinerals_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    PlayerModifyPropertyInt(EventPlayer(), c_playerPropMinerals, c_playerPropOperAdd, 5000);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib3_gt_CheatMinerals_Init () {
+    lib3_gt_CheatMinerals = TriggerCreate("lib3_gt_CheatMinerals_Func");
+    TriggerAddEventChatMessage(lib3_gt_CheatMinerals, c_playerAny, "cheatminerals", true);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: TradeRestrictions
+//--------------------------------------------------------------------------------------------------
+bool lib3_gt_TradeRestrictions_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_tradeWaitTime;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    UIDisplayMessage(PlayerGroupAll(), c_messageAreaSubtitle, (StringExternal("Param/Value/lib_3_B69FA761") + PlayerName(EventPlayer()) + StringExternal("Param/Value/lib_3_4F4ABB76") + IntToText(EventResourceTradeAmount(c_resourceTypeMinerals)) + StringExternal("Param/Value/lib_3_9D10C12C") + PlayerName(EventResourceTradeRecipient()) + StringExternal("Param/Value/lib_3_4CA0595B") + IntToText(lv_tradeWaitTime) + StringExternal("Param/Value/lib_3_EC4D1505")));
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib3_gt_TradeRestrictions_Init () {
+    lib3_gt_TradeRestrictions = TriggerCreate("lib3_gt_TradeRestrictions_Func");
+    TriggerAddEventResourceTrade(lib3_gt_TradeRestrictions, c_playerAny, c_playerAny);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: OutpostDeath
+//--------------------------------------------------------------------------------------------------
+bool lib3_gt_OutpostDeath_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((UnitGetOwner(EventUnit()) != 0))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    CameraPan(UnitGetOwner(EventUnit()), UnitGetPosition(EventUnit()), 1.0, -1, 10.0, false);
+    Wait(3.0, c_timeGame);
+    UIDisplayMessage(PlayerGroupAll(), c_messageAreaChat, (StringExternal("Param/Value/lib_3_1A40ECF2") + PlayerName(UnitGetOwner(EventUnit())) + StringExternal("Param/Value/lib_3_D43E8859")));
+    GameOver(UnitGetOwner(EventUnit()), c_gameOverDefeat, false, true);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib3_gt_OutpostDeath_Init () {
+    lib3_gt_OutpostDeath = TriggerCreate("lib3_gt_OutpostDeath_Func");
+    TriggerAddEventUnitBehaviorChange(lib3_gt_OutpostDeath, null, "OutpostDefended", c_unitBehaviorChangeDestroy);
+}
+
+void lib3_InitTriggers () {
+    lib3_gt_MarauderDeath_Init();
+    lib3_gt_CheatVision_Init();
+    lib3_gt_CheatMinerals_Init();
+    lib3_gt_TradeRestrictions_Init();
+    lib3_gt_OutpostDeath_Init();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+bool lib3_InitLib_completed = false;
+
+void lib3_InitLib () {
+    if (lib3_InitLib_completed) {
+        return;
+    }
+
+    lib3_InitLib_completed = true;
+
+    lib3_InitLibraries();
+    lib3_InitTriggers();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library: GameAI
+//--------------------------------------------------------------------------------------------------
+// Variable Declarations
+int lib2_gv_UnitInfoId_Bugs;
+
+// Function Declarations
+void lib2_gf_GameLoop ();
+void lib2_gf_SpawnWave ();
+point lib2_gf_GetWaveSpawnLocation (point lp_TargetUnitPoint);
+unitgroup lib2_gf_GetWaveSpawnUnitGroup ();
+
+// Trigger Declarations
+trigger lib2_gt_UnitManagement;
+trigger lib2_gt_BugUnitsInit;
+
+// Library Initialization
+void lib2_InitVariables ();
+
+//--------------------------------------------------------------------------------------------------
+// Library: GameAI
+//--------------------------------------------------------------------------------------------------
+// External Library Initialization
+void lib2_InitLibraries () {
+    libNtve_InitVariables();
+    libCamp_InitVariables();
+    lib8DAE26A7_InitVariables();
+    libF0008B31_InitVariables();
+}
+
+// Variable Initialization
+bool lib2_InitVariables_completed = false;
+
+void lib2_InitVariables () {
+    if (lib2_InitVariables_completed) {
+        return;
+    }
+
+    lib2_InitVariables_completed = true;
+
+    lib2_gv_UnitInfoId_Bugs = lib8DAE26A7_gf_UnitInfo_GetUnusedUnitInfoId();
+}
+
+// Functions
+trigger auto_lib2_gf_GameLoop_Trigger = null;
+
+void lib2_gf_GameLoop () {
+    if (auto_lib2_gf_GameLoop_Trigger == null) {
+        auto_lib2_gf_GameLoop_Trigger = TriggerCreate("auto_lib2_gf_GameLoop_TriggerFunc");
+    }
+
+    TriggerExecute(auto_lib2_gf_GameLoop_Trigger, false, false);
+}
+
+bool auto_lib2_gf_GameLoop_TriggerFunc (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Implementation
+    libF0008B31_gf_Wave_AddRandomUnit(lib2_gv_UnitInfoId_Bugs, 0, 30.0);
+    libF0008B31_gf_Wave_AddRandomUnit(lib2_gv_UnitInfoId_Bugs, 0, 30.0);
+    libF0008B31_gf_Wave_AddRandomUnit(lib2_gv_UnitInfoId_Bugs, 0, 30.0);
+    libF0008B31_gf_Wave_AddValue(lib2_gv_UnitInfoId_Bugs, 0, 100.0);
+    libF0008B31_gf_Wave_SetSlotCount(lib2_gv_UnitInfoId_Bugs, 0, 2);
+    while ((lib4_gv_IsGameLoopRunning == true)) {
+        Wait(10.0, c_timeGame);
+        lib2_gf_SpawnWave();
+    }
+    return true;
+}
+
+trigger auto_lib2_gf_SpawnWave_Trigger = null;
+
+void lib2_gf_SpawnWave () {
+    if (auto_lib2_gf_SpawnWave_Trigger == null) {
+        auto_lib2_gf_SpawnWave_Trigger = TriggerCreate("auto_lib2_gf_SpawnWave_TriggerFunc");
+    }
+
+    TriggerExecute(auto_lib2_gf_SpawnWave_Trigger, false, false);
+}
+
+bool auto_lib2_gf_SpawnWave_TriggerFunc (bool testConds, bool runActions) {
+    // Variable Declarations
+    unit lv_targetUnit;
+    point lv_targetUnitPoint;
+    unitgroup lv_unitGroup;
+    point lv_spawnPoint;
+
+    // Automatic Variable Declarations
+    unitgroup autoDD492E14_g;
+    int autoDD492E14_u;
+    unit autoDD492E14_var;
+
+    // Variable Initialization
+    lv_targetUnit = UnitGroupRandomUnit(UnitGroupAlliance(5, c_unitAllianceAlly, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0), c_unitCountAlive);
+    lv_targetUnitPoint = UnitGetPosition(lv_targetUnit);
+    lv_unitGroup = lib2_gf_GetWaveSpawnUnitGroup();
+    lv_spawnPoint = lib2_gf_GetWaveSpawnLocation(lv_targetUnitPoint);
+
+    // Implementation
+    libCamp_gf_CreateDropPod(libCamp_ge_DropPodRace_Zerg, lv_spawnPoint, lv_unitGroup, true);
+    Wait(RandomFixed(0.0, 3.0), c_timeGame);
+    autoDD492E14_g = lv_unitGroup;
+    autoDD492E14_u = UnitGroupCount(autoDD492E14_g, c_unitCountAll);
+    for (;; autoDD492E14_u -= 1) {
+        autoDD492E14_var = UnitGroupUnitFromEnd(autoDD492E14_g, autoDD492E14_u);
+        if (autoDD492E14_var == null) { break; }
+        UnitIssueOrder(autoDD492E14_var, OrderTargetingPoint(AbilityCommand("attack", 0), RegionRandomPoint(RegionCircle(lv_spawnPoint, 15.0))), c_orderQueueAddToEnd);
+    }
+    return true;
+}
+
+point lib2_gf_GetWaveSpawnLocation (point lp_TargetUnitPoint) {
+    // Variable Declarations
+    string lv_spawnerUnitType;
+    unitgroup lv_spawnerUnitGroup;
+    unit lv_spawnerUnit;
+    point lv_resultLocation;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_spawnerUnitType = "CreepTumorBurrowed";
+    lv_spawnerUnitGroup = UnitGroup(lv_spawnerUnitType, c_playerAny, RegionEntireMap(), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0);
+    lv_spawnerUnit = UnitGroupClosestToPoint(lv_spawnerUnitGroup, lp_TargetUnitPoint);
+
+    // Implementation
+    while ((lv_spawnerUnit != null) && (UnitGroupCount(UnitGroupAlliance(14, c_unitAllianceEnemy, RegionCircle(UnitGetPosition(lv_spawnerUnit), 30.0), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0), c_unitCountAlive) != 0)) {
+        UnitGroupRemove(lv_spawnerUnitGroup, lv_spawnerUnit);
+        lv_spawnerUnit = UnitGroupClosestToPoint(lv_spawnerUnitGroup, lp_TargetUnitPoint);
+    }
+    lv_resultLocation = UnitGetPosition(lv_spawnerUnit);
+    return lv_resultLocation;
+}
+
+unitgroup lib2_gf_GetWaveSpawnUnitGroup () {
+    // Variable Declarations
+    unitgroup lv_unitGroup;
+
+    // Automatic Variable Declarations
+    unitgroup auto0351C647_g;
+    int auto0351C647_u;
+    unit auto0351C647_var;
+
+    // Variable Initialization
+    lv_unitGroup = libF0008B31_gf_Wave_GetNewUnitGroupHidden(lib2_gv_UnitInfoId_Bugs, 0, 14);
+
+    // Implementation
+    auto0351C647_g = lv_unitGroup;
+    auto0351C647_u = UnitGroupCount(auto0351C647_g, c_unitCountAll);
+    for (;; auto0351C647_u -= 1) {
+        auto0351C647_var = UnitGroupUnitFromEnd(auto0351C647_g, auto0351C647_u);
+        if (auto0351C647_var == null) { break; }
+        UnitBehaviorAddPlayer(auto0351C647_var, lib4_gv_BugsWaveBehavior, 14, 1);
+    }
+    return lv_unitGroup;
+}
+
+// Triggers
+//--------------------------------------------------------------------------------------------------
+// Trigger: UnitManagement
+//--------------------------------------------------------------------------------------------------
+bool lib2_gt_UnitManagement_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Conditions
+    if (testConds) {
+        if (!((UnitGetOwner(EventUnit()) == 14))) {
+            return false;
+        }
+
+        if (!((UnitHasBehavior(EventUnit(), lib4_gv_BugsWaveBehavior) == true))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    UnitIssueOrder(EventUnit(), OrderTargetingPoint(AbilityCommand("attack", 0), RegionRandomPoint(RegionCircle(lib4_gv_PlanetaryFortressPosition, 10.0))), c_orderQueueAddToEnd);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib2_gt_UnitManagement_Init () {
+    lib2_gt_UnitManagement = TriggerCreate("lib2_gt_UnitManagement_Func");
+    TriggerAddEventUnitBecomesIdle(lib2_gt_UnitManagement, null, true);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: BugUnitsInit
+//--------------------------------------------------------------------------------------------------
+bool lib2_gt_BugUnitsInit_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    lib8DAE26A7_gf_UnitInfo_AddFamily(lib2_gv_UnitInfoId_Bugs, "melee");
+    lib8DAE26A7_gf_UnitInfo_AddFamily(lib2_gv_UnitInfoId_Bugs, "ranged");
+    lib8DAE26A7_gf_UnitInfo_AddUnit(lib2_gv_UnitInfoId_Bugs, "Roach", 10.0, 1);
+    lib8DAE26A7_gf_UnitInfo_AddUnit(lib2_gv_UnitInfoId_Bugs, "PrimalRoach", 20.0, 1);
+    lib8DAE26A7_gf_UnitInfo_SetUnitFamilyMultiplier(lib2_gv_UnitInfoId_Bugs, "PrimalRoach", "ranged", 3.0);
+    lib8DAE26A7_gf_UnitInfo_AddUnit(lib2_gv_UnitInfoId_Bugs, "RoachCorpser", 30.0, 1);
+    lib8DAE26A7_gf_UnitInfo_SetUnitFamilyMultiplier(lib2_gv_UnitInfoId_Bugs, "RoachCorpser", "ranged", 3.0);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib2_gt_BugUnitsInit_Init () {
+    lib2_gt_BugUnitsInit = TriggerCreate("lib2_gt_BugUnitsInit_Func");
+}
+
+void lib2_InitTriggers () {
+    lib2_gt_UnitManagement_Init();
+    lib2_gt_BugUnitsInit_Init();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+bool lib2_InitLib_completed = false;
+
+void lib2_InitLib () {
+    if (lib2_InitLib_completed) {
+        return;
+    }
+
+    lib2_InitLib_completed = true;
+
+    lib2_InitLibraries();
+    lib2_InitVariables();
+    lib2_InitTriggers();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library: GameInitialization
+//--------------------------------------------------------------------------------------------------
+// Function Declarations
+void lib1_gf_SpawnCommandCenter ();
+void lib1_gf_SpawnCreepOnMap ();
+void lib1_gf_SpawnGeysersOnMap ();
+
+// Trigger Declarations
+trigger lib1_gt_VeryFirstTrigger;
+trigger lib1_gt_InitBasics;
+trigger lib1_gt_Bugfixes;
+
+//--------------------------------------------------------------------------------------------------
+// Library: GameInitialization
+//--------------------------------------------------------------------------------------------------
+// External Library Initialization
+void lib1_InitLibraries () {
+    libNtve_InitVariables();
+}
+
+// Functions
+void lib1_gf_SpawnCommandCenter () {
+    // Variable Declarations
+    point lv_randomPoint;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_randomPoint = AIRandomSpawnPoint(5, RegionPlayableMap(), 0.0, 0.0, 0.0);
+
+    // Implementation
+    while (((lv_randomPoint == null) || (PathingType(lv_randomPoint) != c_pathingGround))) {
+        lv_randomPoint = RegionRandomPoint(RegionPlayableMap());
+    }
+    UnitCreate(1, "PlanetaryFortress", 0, 5, lv_randomPoint, libNtve_gf_RandomAngle());
+    lib4_gv_PlanetaryFortress = UnitLastCreated();
+    lib4_gv_PlanetaryFortressPosition = UnitGetPosition(UnitLastCreated());
+}
+
+void lib1_gf_SpawnCreepOnMap () {
+    // Variable Declarations
+    point lv_randomPoint;
+
+    // Automatic Variable Declarations
+    const int auto89EFD882_n = 100;
+    int auto89EFD882_i;
+
+    // Variable Initialization
+    lv_randomPoint = RegionRandomPoint(RegionPlayableMap());
+
+    // Implementation
+    for (auto89EFD882_i = 1; auto89EFD882_i <= auto89EFD882_n; auto89EFD882_i += 1) {
+        while (((lv_randomPoint == null) || (PathingType(lv_randomPoint) != c_pathingGround) || (UnitGroupCount(UnitGroupAlliance(14, c_unitAllianceEnemy, RegionCircle(lv_randomPoint, 30.0), UnitFilter(0, 0, (1 << c_targetFilterMissile), (1 << (c_targetFilterDead - 32)) | (1 << (c_targetFilterHidden - 32))), 0), c_unitCountAlive) != 0))) {
+            lv_randomPoint = RegionRandomPoint(RegionPlayableMap());
+        }
+        UnitCreate(1, "CreepTumorBurrowed", 0, 14, lv_randomPoint, libNtve_gf_RandomAngle());
+        lv_randomPoint = AIRandomSpawnPoint(14, RegionPlayableMap(), 15.0, 300.0, 300.0);
+    }
+}
+
+void lib1_gf_SpawnGeysersOnMap () {
+    // Variable Declarations
+    point lv_randomPoint;
+
+    // Automatic Variable Declarations
+    const int autoC6CB12ED_n = 100;
+    int autoC6CB12ED_i;
+
+    // Variable Initialization
+    lv_randomPoint = RegionRandomPoint(RegionPlayableMap());
+
+    // Implementation
+    for (autoC6CB12ED_i = 1; autoC6CB12ED_i <= autoC6CB12ED_n; autoC6CB12ED_i += 1) {
+        while (((lv_randomPoint == null) || (PathingType(lv_randomPoint) != c_pathingGround))) {
+            lv_randomPoint = RegionRandomPoint(RegionPlayableMap());
+        }
+        UnitCreate(1, "VespeneGeyser", 0, 0, lv_randomPoint, libNtve_gf_RandomAngle());
+        lv_randomPoint = RegionRandomPoint(RegionPlayableMap());
+    }
+}
+
+// Triggers
+//--------------------------------------------------------------------------------------------------
+// Trigger: VeryFirstTrigger
+//--------------------------------------------------------------------------------------------------
+bool lib1_gt_VeryFirstTrigger_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    playergroup auto06BA4837_g;
+    int auto06BA4837_var;
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerExecute(lib1_gt_InitBasics, true, true);
+    TriggerExecute(lib1_gt_Bugfixes, true, true);
+    TriggerExecute(lib2_gt_BugUnitsInit, true, true);
+    lib1_gf_SpawnCommandCenter();
+    lib1_gf_SpawnGeysersOnMap();
+    lib1_gf_SpawnCreepOnMap();
+    lib2_gf_GameLoop();
+    auto06BA4837_g = lib4_gv_PlayerGroup;
+    auto06BA4837_var = -1;
+    while (true) {
+        auto06BA4837_var = PlayerGroupNextPlayer(auto06BA4837_g, auto06BA4837_var);
+        if (auto06BA4837_var < 0) { break; }
+        lib3_gf_CallDropToMain("Marauder_BlackOps", 1, RegionRandomPoint(RegionCircle(lib4_gv_PlanetaryFortressPosition, 5.0)), auto06BA4837_var, true);
+    }
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib1_gt_VeryFirstTrigger_Init () {
+    lib1_gt_VeryFirstTrigger = TriggerCreate("lib1_gt_VeryFirstTrigger_Func");
+    TriggerAddEventMapInit(lib1_gt_VeryFirstTrigger);
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: InitBasics
+//--------------------------------------------------------------------------------------------------
+bool lib1_gt_InitBasics_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    const int auto06DC51F5_ae = 4;
+    int auto06DC51F5_var;
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    UISetResourceTradingAllowed(c_resourceTypeMinerals, false);
+    UISetResourceTradingAllowed(c_resourceTypeVespene, false);
+    auto06DC51F5_var = 1;
+    for ( ; auto06DC51F5_var <= auto06DC51F5_ae; auto06DC51F5_var += 1 ) {
+        if ((PlayerStatus(auto06DC51F5_var) == c_playerStatusActive)) {
+            PlayerGroupAdd(lib4_gv_PlayerGroup, auto06DC51F5_var);
+            libNtve_gf_SetAlliance(auto06DC51F5_var, 5, libNtve_ge_AllianceSetting_AllyWithSharedVision);
+            libNtve_gf_SetAlliance(auto06DC51F5_var, 14, libNtve_ge_AllianceSetting_Enemy);
+        }
+
+    }
+    libNtve_gf_SetAlliance(14, 5, libNtve_ge_AllianceSetting_Enemy);
+    TriggerDestroy(lib1_gt_InitBasics);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib1_gt_InitBasics_Init () {
+    lib1_gt_InitBasics = TriggerCreate("lib1_gt_InitBasics_Func");
+}
+
+//--------------------------------------------------------------------------------------------------
+// Trigger: Bugfixes
+//--------------------------------------------------------------------------------------------------
+bool lib1_gt_Bugfixes_Func (bool testConds, bool runActions) {
+    // Automatic Variable Declarations
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    TriggerDestroy(lib1_gt_Bugfixes);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void lib1_gt_Bugfixes_Init () {
+    lib1_gt_Bugfixes = TriggerCreate("lib1_gt_Bugfixes_Func");
+}
+
+void lib1_InitTriggers () {
+    lib1_gt_VeryFirstTrigger_Init();
+    lib1_gt_InitBasics_Init();
+    lib1_gt_Bugfixes_Init();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+bool lib1_InitLib_completed = false;
+
+void lib1_InitLib () {
+    if (lib1_InitLib_completed) {
+        return;
+    }
+
+    lib1_InitLib_completed = true;
+
+    lib1_InitLibraries();
+    lib1_InitTriggers();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+void InitLibs () {
+    libNtve_InitLib();
+    libCamp_InitLib();
+    lib8DAE26A7_InitLib();
+    libF0008B31_InitLib();
+    lib4_InitLib();
+    lib3_InitLib();
+    lib2_InitLib();
+    lib1_InitLib();
+}
+
+//--------------------------------------------------------------------------------------------------
+// Map Initialization
+//--------------------------------------------------------------------------------------------------
+void InitMap () {
+    InitLibs();
+}

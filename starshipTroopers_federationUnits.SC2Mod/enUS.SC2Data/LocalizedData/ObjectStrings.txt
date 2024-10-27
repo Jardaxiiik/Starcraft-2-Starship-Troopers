@@ -1,0 +1,3 @@
+﻿Abil/EditorPrefix/NovaGadgetFlashBangGrenades=[UNUSED]
+Abil/EditorPrefix/NovaGadgetPulseGrenades=[UNUSED]
+Abil/EditorPrefix/NovaUnitSmokeGrenade=[UNUSED]

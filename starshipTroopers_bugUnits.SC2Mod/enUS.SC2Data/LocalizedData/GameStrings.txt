@@ -1,0 +1,7 @@
+﻿DocInfo/DescShort=Any
+DocInfo/Name=Just Another StarCraft II Mod
+Unit/Name/BugHole_Magma=Bug Hole_Magma
+Unit/Name/TygerShard=Tyger Shard
+Unit/Name/TygerSpitter=Tyger Spitter
+Unit/Name/TygerWarrior=Tyger Warrior
+Unit/Name/WarriorBug=Warrior Bug

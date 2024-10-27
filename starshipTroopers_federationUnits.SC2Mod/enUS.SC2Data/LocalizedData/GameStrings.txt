@@ -1,0 +1,8 @@
+﻿Abil/Name/FlashBangGrenades=Flash Bang Grenades
+Abil/Name/PulseGrenades=Pulse Grenades
+Abil/Name/SmokeGrenade=Smoke Grenade
+DocInfo/DescLong=Completely devoid of any description whatsoever.
+DocInfo/DescShort=Any
+DocInfo/Name=Just Another StarCraft II Mod
+Unit/Name/StarshipTroopersMarauder=Marauder
+Unit/Name/StrongholdTower=Stronghold Tower

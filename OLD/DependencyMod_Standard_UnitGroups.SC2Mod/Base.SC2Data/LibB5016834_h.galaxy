@@ -1,0 +1,41 @@
+include "TriggerLibs/natives"
+
+//--------------------------------------------------------------------------------------------------
+// Library: UnitGroups
+//--------------------------------------------------------------------------------------------------
+// Preset Declarations
+const int libB5016834_ge_UnitGroups__SpawnType_SpawnFromEgg = 0;
+const int libB5016834_ge_UnitGroups__SpawnType_SpawnFromEggCircle = 1;
+const int libB5016834_ge_UnitGroups__SpawnType_SpawnFromVoid = 2;
+const int libB5016834_ge_UnitGroups__SpawnType_SpawnInstant = 3;
+
+// Structures
+struct libB5016834_gs_UnitGroup__Record {
+    int lv_UnitTypeHighestId;
+    string[41] lv_UnitType;
+    int[41] lv_UnitCount;
+};
+
+struct libB5016834_gs_UnitGroups__Record {
+    int lv_UnitGroup_HighestId;
+    int lv_UnitPool_Id_AvaiableUnitTypes;
+    int lv_Family_HighestId;
+    int[21] lv_Family_Pool_Id;
+    string[21] lv_FamilyName;
+    fixed[21] lv_FamilyWeight;
+};
+
+// Variable Declarations
+libB5016834_gs_UnitGroup__Record[11][21] libB5016834_gv_UnitGroup__Record;
+libB5016834_gs_UnitGroups__Record[21] libB5016834_gv_UnitGroups__Record;
+
+// Function Declarations
+void libB5016834_gf_UnitGroups__SpawnUnitThread (int lp_HandlerId, string lp_UnitType, int lp_Owner, point lp_SourcePoint, fixed lp_SourceRadius, fixed lp_BirthTime, int lp_SpawnType, unit lp_TargetUnit, int lp_TargetPlayer);
+fixed libB5016834_gf_UnitGroups_CreateNewGroup (int lp_HandlerId, int lp_Owner, point lp_SpawnPoint, fixed lp_SpawnPointRadius, fixed lp_TargetUnitRadius, playergroup lp_TargetPlayers, unitfilter lp_TargetUnitsFilters, fixed lp_SpawnUnitsTotalValue, int lp_SpawnCountMax, fixed lp_SpawnUnitsMinValue, fixed lp_SpawnUnitsMaxValue, int lp_SpawnType, unit lp_SpawnedUnitsShareTargetUnit, int lp_SpawnedUnitsShareTargetPlayer, fixed lp_SpawnDelayBetweenUnits);
+fixed libB5016834_gf_UnitGroups_CreateUnits (int lp_HandlerId, int lp_Owner, point lp_SpawnPoint, fixed lp_SpawnPointRadius, fixed lp_TargetUnitRadius, playergroup lp_TargetPlayers, unitfilter lp_TargetUnitsFilters, fixed lp_SpawnUnitsTotalValue, int lp_SpawnCountMax, fixed lp_SpawnUnitsMinValue, fixed lp_SpawnUnitsMaxValue, int lp_SpawnType, unit lp_SpawnedUnitsShareTargetUnit, int lp_SpawnedUnitsShareTargetPlayer, fixed lp_SpawnDelayBetweenUnits);
+int libB5016834_gf_getFamilyIdFromPoolId (int lp_UnitGroups_Id, int lp_Pool_Id);
+void libB5016834_gf_UnitGroups_SetUnit (int lp_UnitGroups_Id, int lp_Family_Pool_Id, string lp_UnitType, fixed lp_Value, fixed lp_Weight);
+
+// Library Initialization
+void libB5016834_InitVariables ();
+

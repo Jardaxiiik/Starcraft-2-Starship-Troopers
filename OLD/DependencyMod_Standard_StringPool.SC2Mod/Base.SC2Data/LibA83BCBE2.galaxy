@@ -1,0 +1,323 @@
+include "TriggerLibs/NativeLib"
+
+include "LibA83BCBE2_h"
+
+//--------------------------------------------------------------------------------------------------
+// Library: StringPool
+//--------------------------------------------------------------------------------------------------
+// External Library Initialization
+void libA83BCBE2_InitLibraries () {
+    libNtve_InitVariables();
+}
+
+// Variable Initialization
+bool libA83BCBE2_InitVariables_completed = false;
+
+void libA83BCBE2_InitVariables () {
+    int init_i;
+    int init_i1;
+
+    if (libA83BCBE2_InitVariables_completed) {
+        return;
+    }
+
+    libA83BCBE2_InitVariables_completed = true;
+
+    for (init_i = 0; init_i <= libA83BCBE2_gv_StringPool__RecordMaxCount; init_i += 1) {
+        libA83BCBE2_gv_StringPool__Record[init_i].lv_StringType_HighestId = -1;
+        for (init_i1 = 0; init_i1 <= libA83BCBE2_gv_StringPool__StringTypeMaxCount; init_i1 += 1) {
+            libA83BCBE2_gv_StringPool__Record[init_i].lv_StringType_Value[init_i1] = 1.0;
+        }
+        for (init_i1 = 0; init_i1 <= libA83BCBE2_gv_StringPool__StringTypeMaxCount; init_i1 += 1) {
+            libA83BCBE2_gv_StringPool__Record[init_i].lv_StringType_Weight[init_i1] = 1.0;
+        }
+        for (init_i1 = 0; init_i1 <= libA83BCBE2_gv_StringPool__StringTypeMaxCount; init_i1 += 1) {
+            libA83BCBE2_gv_StringPool__Record[init_i].lv_StringType[init_i1] = "";
+        }
+    }
+}
+
+// Functions
+int libA83BCBE2_gf_StringPool__GetMinValueId (int lp_Pool_Id, fixed lp_MinValule) {
+    // Automatic Variable Declarations
+    int auto1913AB9C_ae;
+    int auto1913AB9C_var;
+
+    // Implementation
+    auto1913AB9C_ae = libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId;
+    auto1913AB9C_var = 0;
+    for ( ; auto1913AB9C_var <= auto1913AB9C_ae; auto1913AB9C_var += 1 ) {
+        if ((libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[auto1913AB9C_var] >= lp_MinValule)) {
+            return auto1913AB9C_var;
+        }
+
+    }
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_A83BCBE2_3494335C") + StringExternal("Param/Value/lib_A83BCBE2_740F69AE") + FixedToText(lp_MinValule, c_fixedPrecisionAny)), true);
+    return -1;
+}
+
+int libA83BCBE2_gf_StringPool__GetMaxValueId (int lp_Pool_Id, fixed lp_MaxValule) {
+    // Automatic Variable Declarations
+    int auto79265A6B_ae;
+    int auto79265A6B_var;
+
+    // Implementation
+    if ((lp_MaxValule == 0.0)) {
+        return libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId;
+    }
+
+    auto79265A6B_ae = libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId;
+    auto79265A6B_var = 0;
+    for ( ; auto79265A6B_var <= auto79265A6B_ae; auto79265A6B_var += 1 ) {
+        if ((libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[auto79265A6B_var] > lp_MaxValule)) {
+            return (auto79265A6B_var - 1);
+        }
+
+    }
+    if ((libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId] <= lp_MaxValule)) {
+        return libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId;
+    }
+
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_A83BCBE2_A5CB6FBF") + StringExternal("Param/Value/lib_A83BCBE2_9BB04221") + FixedToText(lp_MaxValule, c_fixedPrecisionAny)), true);
+    return -1;
+}
+
+fixed libA83BCBE2_gf_StringPool__GetTotalWeight (int lp_Pool_Id, int lp_MinValueId, int lp_MaxValueId) {
+    // Variable Declarations
+    fixed lv_thisWeight;
+
+    // Automatic Variable Declarations
+    int autoD258BE12_ae;
+    int autoD258BE12_var;
+
+    // Variable Initialization
+
+    // Implementation
+    autoD258BE12_ae = lp_MaxValueId;
+    autoD258BE12_var = lp_MinValueId;
+    for ( ; autoD258BE12_var <= autoD258BE12_ae; autoD258BE12_var += 1 ) {
+        lv_thisWeight += libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Weight[autoD258BE12_var];
+    }
+    return lv_thisWeight;
+}
+
+int libA83BCBE2_gf_StringPool__GetStringIdByString (int lp_Pool_Id, string lp_String) {
+    // Variable Declarations
+    int lv_resultId;
+
+    // Automatic Variable Declarations
+    int auto67A7AED5_ae;
+    int auto67A7AED5_var;
+
+    // Variable Initialization
+    lv_resultId = -1;
+
+    // Implementation
+    auto67A7AED5_ae = libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId;
+    auto67A7AED5_var = 0;
+    for ( ; auto67A7AED5_var <= auto67A7AED5_ae; auto67A7AED5_var += 1 ) {
+        if ((lp_String == libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType[auto67A7AED5_var])) {
+            return auto67A7AED5_var;
+        }
+
+    }
+    return -1;
+}
+
+void libA83BCBE2_gf_StringPool__AddStringType (int lp_Pool_Id, string lp_StringType, fixed lp_Value, fixed lp_Weight) {
+    // Variable Declarations
+    int lv_highestId;
+    int lv_id;
+    int lv_idMinus;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_highestId = (libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId + 1);
+    lv_id = lv_highestId;
+    lv_idMinus = (lv_id - 1);
+
+    // Implementation
+    if ((lv_highestId > libA83BCBE2_gv_StringPool__StringTypeMaxCount)) {
+        return ;
+    }
+
+    libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId = lv_highestId;
+    libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_IsUsed = true;
+    while ((lv_id != 0) && (libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[lv_idMinus] > lp_Value)) {
+        libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType[lv_id] = libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType[lv_idMinus];
+        libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[lv_id] = libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[lv_idMinus];
+        libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Weight[lv_id] = libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Weight[lv_idMinus];
+        lv_id -= 1;
+        lv_idMinus = (lv_id - 1);
+    }
+    libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType[lv_id] = lp_StringType;
+    libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[lv_id] = lp_Value;
+    libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Weight[lv_id] = lp_Weight;
+}
+
+int libA83BCBE2_gf_StringPool_GetStringIdByRandom (int lp_Pool_Id, fixed lp_MinValue, fixed lp_MaxValue) {
+    // Variable Declarations
+    int lv_minValueId;
+    int lv_maxValueId;
+    fixed lv_totalWeight;
+    fixed lv_currentWeight;
+    fixed lv_randomWeight;
+
+    // Automatic Variable Declarations
+    int autoA09FC2DF_ae;
+    int autoA09FC2DF_var;
+
+    // Variable Initialization
+    lv_minValueId = libA83BCBE2_gf_StringPool__GetMinValueId(lp_Pool_Id, lp_MinValue);
+    lv_maxValueId = libA83BCBE2_gf_StringPool__GetMaxValueId(lp_Pool_Id, lp_MaxValue);
+    lv_totalWeight = libA83BCBE2_gf_StringPool__GetTotalWeight(lp_Pool_Id, lv_minValueId, lv_maxValueId);
+    lv_randomWeight = RandomFixed(0.0, libA83BCBE2_gf_StringPool__GetTotalWeight(lp_Pool_Id, lv_minValueId, lv_maxValueId));
+
+    // Implementation
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_A83BCBE2_C404D297") + IntToText(lv_minValueId) + StringExternal("Param/Value/lib_A83BCBE2_2A159BF8") + IntToText(lv_maxValueId) + StringExternal("Param/Value/lib_A83BCBE2_C43EB519") + FixedToText(lv_totalWeight, c_fixedPrecisionAny)), true);
+    autoA09FC2DF_ae = lv_maxValueId;
+    autoA09FC2DF_var = lv_minValueId;
+    for ( ; autoA09FC2DF_var <= autoA09FC2DF_ae; autoA09FC2DF_var += 1 ) {
+        lv_currentWeight += libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Weight[autoA09FC2DF_var];
+        if ((lv_currentWeight >= lv_randomWeight)) {
+            return autoA09FC2DF_var;
+        }
+
+    }
+    return -1;
+}
+
+string libA83BCBE2_gf_StringPool_GetStringTypeById (int lp_Pool_Id, int lp_StringId) {
+    // Automatic Variable Declarations
+    // Implementation
+    if ((lp_StringId != -1)) {
+        return libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType[lp_StringId];
+    }
+    else {
+        return "-1";
+    }
+}
+
+fixed libA83BCBE2_gf_StringPool_GetStringValueById (int lp_Pool_Id, int lp_StringId) {
+    // Automatic Variable Declarations
+    // Implementation
+    if ((lp_StringId != -1)) {
+        return libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[lp_StringId];
+    }
+    else {
+        return -1.0;
+    }
+}
+
+fixed libA83BCBE2_gf_StringPool_GetStringWeightById (int lp_Pool_Id, int lp_StringId) {
+    // Automatic Variable Declarations
+    // Implementation
+    if ((lp_StringId != -1)) {
+        return libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Weight[lp_StringId];
+    }
+    else {
+        return -1.0;
+    }
+}
+
+bool libA83BCBE2_gf_StringPool_IsPoolUsed (int lp_Pool_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    return libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_IsUsed;
+}
+
+void libA83BCBE2_gf_StringPool_SetStringType (int lp_Pool_Id, string lp_StringType, fixed lp_Value, fixed lp_Weight) {
+    // Variable Declarations
+    int lv_stringTypeId;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_stringTypeId = libA83BCBE2_gf_StringPool__GetStringIdByString(lp_Pool_Id, lp_StringType);
+
+    // Implementation
+    if ((lv_stringTypeId == -1)) {
+        if ((lv_stringTypeId == -1)) {
+        }
+        else {
+            libA83BCBE2_gf_StringPool__AddStringType(lp_Pool_Id, lp_StringType, lp_Value, lp_Weight);
+        }
+    }
+    else {
+        libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[lv_stringTypeId] = lp_Value;
+        libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Weight[lv_stringTypeId] = lp_Weight;
+    }
+}
+
+void libA83BCBE2_gf_StringPool_RemoveStringType (int lp_Pool_Id, string lp_StringType) {
+    // Variable Declarations
+    int lv_highestId;
+    int lv_stringTypeId;
+    int lv_idPlus;
+
+    // Automatic Variable Declarations
+    int autoAE7DF691_ae;
+    int autoAE7DF691_var;
+
+    // Variable Initialization
+    lv_highestId = (libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId - 1);
+    lv_stringTypeId = libA83BCBE2_gf_StringPool__GetStringIdByString(lp_Pool_Id, lp_StringType);
+
+    // Implementation
+    if ((lv_stringTypeId == -1)) {
+        return ;
+    }
+
+    libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId = lv_highestId;
+    autoAE7DF691_ae = lv_highestId;
+    autoAE7DF691_var = lv_stringTypeId;
+    for ( ; autoAE7DF691_var <= autoAE7DF691_ae; autoAE7DF691_var += 1 ) {
+        lv_idPlus = (autoAE7DF691_var + 1);
+        libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType[autoAE7DF691_var] = libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType[lv_idPlus];
+        libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[autoAE7DF691_var] = libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Value[lv_idPlus];
+        libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Weight[autoAE7DF691_var] = libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_Weight[lv_idPlus];
+    }
+    if ((lv_highestId == -1)) {
+        libA83BCBE2_gf_StringPool_SetPoolUnused(lp_Pool_Id);
+    }
+
+}
+
+int libA83BCBE2_gf_StringPool_GetUnusedPool () {
+    // Automatic Variable Declarations
+    const int auto5B06DA5A_ae = libA83BCBE2_gv_StringPool__RecordMaxCount;
+    int auto5B06DA5A_var;
+
+    // Implementation
+    auto5B06DA5A_var = 0;
+    for ( ; auto5B06DA5A_var <= auto5B06DA5A_ae; auto5B06DA5A_var += 1 ) {
+        if ((libA83BCBE2_gv_StringPool__Record[auto5B06DA5A_var].lv_IsUsed == false)) {
+            return auto5B06DA5A_var;
+        }
+
+    }
+    return -1;
+}
+
+void libA83BCBE2_gf_StringPool_SetPoolUnused (int lp_Pool_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_IsUsed = false;
+    libA83BCBE2_gv_StringPool__Record[lp_Pool_Id].lv_StringType_HighestId = -1;
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+bool libA83BCBE2_InitLib_completed = false;
+
+void libA83BCBE2_InitLib () {
+    if (libA83BCBE2_InitLib_completed) {
+        return;
+    }
+
+    libA83BCBE2_InitLib_completed = true;
+
+    libA83BCBE2_InitLibraries();
+    libA83BCBE2_InitVariables();
+}
+

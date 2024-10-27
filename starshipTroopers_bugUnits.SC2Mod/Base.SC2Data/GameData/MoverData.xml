@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CMoverAvoid id="MediumBugClimbing">
+        <PathMode value="Scaler"/>
+        <PlacementArray index="Prevent">
+            <Bits index="GroundNoSpawn" value="1"/>
+        </PlacementArray>
+    </CMoverAvoid>
+</Catalog>

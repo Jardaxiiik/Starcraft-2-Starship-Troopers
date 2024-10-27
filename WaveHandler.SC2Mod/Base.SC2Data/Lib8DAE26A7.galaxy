@@ -1,0 +1,315 @@
+include "TriggerLibs/NativeLib"
+
+include "Lib8DAE26A7_h"
+
+//--------------------------------------------------------------------------------------------------
+// Library: WaveHandler_UnitInfo
+//--------------------------------------------------------------------------------------------------
+// External Library Initialization
+void lib8DAE26A7_InitLibraries () {
+    libNtve_InitVariables();
+}
+
+// Variable Initialization
+bool lib8DAE26A7_InitVariables_completed = false;
+
+void lib8DAE26A7_InitVariables () {
+    int init_i;
+    int init_i1;
+    int init_j1;
+
+    if (lib8DAE26A7_InitVariables_completed) {
+        return;
+    }
+
+    lib8DAE26A7_InitVariables_completed = true;
+
+    for (init_i = 0; init_i <= lib8DAE26A7_gv_UnitInfo__Records_MaxId; init_i += 1) {
+        lib8DAE26A7_gv_UnitInfo__Record[init_i].lv_Units_LastId = -1;
+        lib8DAE26A7_gv_UnitInfo__Record[init_i].lv_FamilyId_LastId = -1;
+        for (init_i1 = 0; init_i1 <= lib8DAE26A7_gv_UnitInfo__Family_MaxId; init_i1 += 1) {
+            lib8DAE26A7_gv_UnitInfo__Record[init_i].lv_FamilyId_Name[init_i1] = "";
+        }
+        for (init_i1 = 0; init_i1 <= lib8DAE26A7_gv_UnitInfo__Units_MaxId; init_i1 += 1) {
+            for (init_j1 = 0; init_j1 <= lib8DAE26A7_gv_UnitInfo__Family_MaxId; init_j1 += 1) {
+                lib8DAE26A7_gv_UnitInfo__Record[init_i].lv_StringArray_UnitFamilyMultipliers[init_i1][init_j1] = 1.0;
+            }
+        }
+    }
+}
+
+// Functions
+int lib8DAE26A7_gf_UnitInfo__GetUnitId_MaxValue (int lp_UnitInfo_Id, fixed lp_MaxValule) {
+    // Automatic Variable Declarations
+    int auto3FC6601F_ae;
+    int auto3FC6601F_var;
+
+    // Implementation
+    if ((lp_MaxValule == 0.0)) {
+        return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId];
+    }
+
+    auto3FC6601F_ae = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId;
+    auto3FC6601F_var = 0;
+    for ( ; auto3FC6601F_var <= auto3FC6601F_ae; auto3FC6601F_var += 1 ) {
+        if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[auto3FC6601F_var]] > lp_MaxValule)) {
+            return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[(auto3FC6601F_var - 1)];
+        }
+
+    }
+    if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId]] <= lp_MaxValule)) {
+        return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId];
+    }
+
+    return -1;
+}
+
+int lib8DAE26A7_gf_UnitInfo__GetUnitId_MinValue (int lp_UnitInfo_Id, fixed lp_MinValule) {
+    // Automatic Variable Declarations
+    int autoB32A3C00_ae;
+    int autoB32A3C00_var;
+
+    // Implementation
+    autoB32A3C00_ae = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId;
+    autoB32A3C00_var = 0;
+    for ( ; autoB32A3C00_var <= autoB32A3C00_ae; autoB32A3C00_var += 1 ) {
+        if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[autoB32A3C00_var]] >= lp_MinValule)) {
+            return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[autoB32A3C00_var];
+        }
+
+    }
+    return -1;
+}
+
+string lib8DAE26A7_gf_UnitInfo__GetUnitType_ById (int lp_UnitInfo_Id, int lp_Unit_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId < lp_Unit_Id)) {
+        return null;
+    }
+
+    return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitTypes[lp_Unit_Id];
+}
+
+fixed lib8DAE26A7_gf_UnitInfo__GetUnitValue_ById (int lp_UnitInfo_Id, int lp_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId < lp_Id)) {
+        return -1.0;
+    }
+
+    return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[0];
+}
+
+fixed lib8DAE26A7_gf_UnitInfo__GetUnitMinimalCount_ById (int lp_UnitInfo_Id, int lp_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId < lp_Id)) {
+        return -1.0;
+    }
+
+    return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[0];
+}
+
+fixed lib8DAE26A7_gf_UnitInfo__GetUnitFamilyMultiplier (int lp_UnitInfo_Id, string lp_UnitType, string lp_FamilyName) {
+    // Variable Declarations
+    int lv_familyId;
+    int lv_unitId;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_familyId = lib8DAE26A7_gf_UnitInfo__GetFamilyId_ByFamilyName(lp_UnitInfo_Id, lp_FamilyName);
+    lv_unitId = lib8DAE26A7_gf_UnitInfo__GetUnitId_ByUnitType(lp_UnitInfo_Id, lp_UnitType);
+
+    // Implementation
+    return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_StringArray_UnitFamilyMultipliers[lv_unitId][lv_familyId];
+}
+
+int lib8DAE26A7_gf_UnitInfo__GetUnitHighestId (int lp_UnitInfo_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId;
+}
+
+int lib8DAE26A7_gf_UnitInfo__GetFamilyHighestId (int lp_UnitInfo_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    return lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_FamilyId_LastId;
+}
+
+void lib8DAE26A7_gf_UnitInfo_AddUnit (int lp_UnitInfo_Id, string lp_Unit_Type, fixed lp_Unit_Value, int lp_Unit_MinimalCount) {
+    // Variable Declarations
+    int lv_unitId;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_unitId = (lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId + 1);
+
+    // Implementation
+    if (((lib8DAE26A7_gf_UnitInfo__GetUnitId_ByUnitType(lp_UnitInfo_Id, lp_Unit_Type) != -1) || (lv_unitId > lib8DAE26A7_gv_UnitInfo__Units_MaxId))) {
+        return ;
+    }
+
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId = lv_unitId;
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_unitId] = lv_unitId;
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitTypes[lv_unitId] = lp_Unit_Type;
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lv_unitId] = lp_Unit_Value;
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitMinimalCount[lv_unitId] = lp_Unit_MinimalCount;
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lv_unitId] = (lp_Unit_Value * lp_Unit_MinimalCount);
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_8DAE26A7_CFA7EFED") + IntToText(lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId)), true);
+}
+
+void lib8DAE26A7_gf_UnitInfo_AddFamily (int lp_UnitInfo_Id, string lp_FamilyName) {
+    // Variable Declarations
+    int lv_familyId;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_familyId = (lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_FamilyId_LastId + 1);
+
+    // Implementation
+    if (((lib8DAE26A7_gf_UnitInfo__GetFamilyId_ByFamilyName(lp_UnitInfo_Id, lp_FamilyName) != -1) || (lv_familyId > lib8DAE26A7_gv_UnitInfo__Family_MaxId))) {
+        return ;
+    }
+
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_FamilyId_LastId = lv_familyId;
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_FamilyId_Name[lv_familyId] = lp_FamilyName;
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_8DAE26A7_ED72E088") + IntToText(lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_FamilyId_LastId)), true);
+}
+
+void lib8DAE26A7_gf_UnitInfo_SetUnitFamilyMultiplier (int lp_UnitInfo_Id, string lp_UnitType, string lp_FamilyName, fixed lp_FamilyMultiplier) {
+    // Variable Declarations
+    int lv_familyId;
+    int lv_unitId;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_familyId = lib8DAE26A7_gf_UnitInfo__GetFamilyId_ByFamilyName(lp_UnitInfo_Id, lp_FamilyName);
+    lv_unitId = lib8DAE26A7_gf_UnitInfo__GetUnitId_ByUnitType(lp_UnitInfo_Id, lp_UnitType);
+
+    // Implementation
+    if (((lv_familyId == -1) || (lv_unitId == -1))) {
+        return ;
+    }
+
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_StringArray_UnitFamilyMultipliers[lv_unitId][lv_familyId] = lp_FamilyMultiplier;
+}
+
+void lib8DAE26A7_gf_UnitInfo__SortUnitIds (int lp_UnitInfo_Id) {
+    // Variable Declarations
+    bool lv_sortOutput;
+    int lv_backwards;
+    int lv_backwardsMinusOne;
+    int lv_forwards;
+    int lv_forwardsPlusOne;
+    int lv_id;
+
+    // Automatic Variable Declarations
+    int auto0CD3FC25_ae;
+    int auto0CD3FC25_var;
+
+    // Variable Initialization
+    lv_sortOutput = true;
+
+    // Implementation
+    while ((lv_sortOutput == true)) {
+        lv_sortOutput = false;
+        auto0CD3FC25_ae = (lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId - 1);
+        auto0CD3FC25_var = 0;
+        for ( ; auto0CD3FC25_var <= auto0CD3FC25_ae; auto0CD3FC25_var += 1 ) {
+            lv_forwards = auto0CD3FC25_var;
+            lv_forwardsPlusOne = (lv_forwards + 1);
+            lv_backwards = (lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId - auto0CD3FC25_var);
+            lv_backwardsMinusOne = (lv_backwards - 1);
+            if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_forwards]] > lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_forwardsPlusOne]])) {
+                lv_id = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_forwards];
+                lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_forwards] = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_forwardsPlusOne];
+                lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_forwardsPlusOne] = lv_id;
+                lv_sortOutput = true;
+            }
+
+            if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_backwards]] < lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_backwardsMinusOne]])) {
+                lv_id = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_backwards];
+                lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_backwards] = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_backwardsMinusOne];
+                lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[lv_backwardsMinusOne] = lv_id;
+                lv_sortOutput = true;
+            }
+
+        }
+    }
+}
+
+int lib8DAE26A7_gf_UnitInfo__GetUnitId_ByUnitType (int lp_UnitInfo_Id, string lp_UnitType) {
+    // Automatic Variable Declarations
+    int autoCC962180_ae;
+    int autoCC962180_var;
+
+    // Implementation
+    autoCC962180_ae = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId;
+    autoCC962180_var = 0;
+    for ( ; autoCC962180_var <= autoCC962180_ae; autoCC962180_var += 1 ) {
+        if ((lp_UnitType == lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitTypes[autoCC962180_var])) {
+            return autoCC962180_var;
+        }
+
+    }
+    return -1;
+}
+
+int lib8DAE26A7_gf_UnitInfo__GetFamilyId_ByFamilyName (int lp_UnitInfo_Id, string lp_FamilyName) {
+    // Automatic Variable Declarations
+    int autoE59E7565_ae;
+    int autoE59E7565_var;
+
+    // Implementation
+    autoE59E7565_ae = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_FamilyId_LastId;
+    autoE59E7565_var = 0;
+    for ( ; autoE59E7565_var <= autoE59E7565_ae; autoE59E7565_var += 1 ) {
+        if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_FamilyId_Name[autoE59E7565_var] == lp_FamilyName)) {
+            return autoE59E7565_var;
+        }
+
+    }
+    return -1;
+}
+
+int lib8DAE26A7_gf_UnitInfo_GetUnusedUnitInfoId () {
+    // Automatic Variable Declarations
+    const int autoAB8D316D_ae = lib8DAE26A7_gv_UnitInfo__Records_MaxId;
+    int autoAB8D316D_var;
+
+    // Implementation
+    autoAB8D316D_var = 0;
+    for ( ; autoAB8D316D_var <= autoAB8D316D_ae; autoAB8D316D_var += 1 ) {
+        if ((lib8DAE26A7_gv_UnitInfo__Record[autoAB8D316D_var].lv_isUsed == false)) {
+            lib8DAE26A7_gv_UnitInfo__Record[autoAB8D316D_var].lv_isUsed = true;
+            return autoAB8D316D_var;
+        }
+
+    }
+    return -1;
+}
+
+void lib8DAE26A7_gf_UnitInfo_SetUnitInfoUnused (int lp_UnitInfo_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_isUsed = true;
+    lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId = -1;
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+bool lib8DAE26A7_InitLib_completed = false;
+
+void lib8DAE26A7_InitLib () {
+    if (lib8DAE26A7_InitLib_completed) {
+        return;
+    }
+
+    lib8DAE26A7_InitLib_completed = true;
+
+    lib8DAE26A7_InitLibraries();
+    lib8DAE26A7_InitVariables();
+}
+

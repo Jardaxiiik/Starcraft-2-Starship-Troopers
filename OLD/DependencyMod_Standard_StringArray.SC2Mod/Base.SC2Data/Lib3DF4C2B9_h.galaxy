@@ -1,0 +1,32 @@
+include "TriggerLibs/natives"
+
+//--------------------------------------------------------------------------------------------------
+// Library: StringArray
+//--------------------------------------------------------------------------------------------------
+// Constants
+const int lib3DF4C2B9_gv_StringArray__Array_MaxId = 30;
+const int lib3DF4C2B9_gv_StringArray__Record_MaxId = 50;
+
+// Structures
+struct lib3DF4C2B9_gs_StringArray__Record {
+    bool lv_Metadata_IsUsed;
+    int lv_StringArray_Size;
+    string[lib3DF4C2B9_gv_StringArray__Array_MaxId + 1] lv_StringArray_Value;
+};
+
+// Variable Declarations
+lib3DF4C2B9_gs_StringArray__Record[lib3DF4C2B9_gv_StringArray__Record_MaxId + 1] lib3DF4C2B9_gv_StringArray__Record;
+
+// Function Declarations
+string lib3DF4C2B9_gf_StringArray_GetValueById (int lp_Array_Id, int lp_Id);
+int lib3DF4C2B9_gf_StringArray_GetIdByValue (int lp_Array_Id, string lp_String);
+int lib3DF4C2B9_gf_StringArray_GetArraySize (int lp_Array_Id);
+int lib3DF4C2B9_gf_StringArray_AddValue_GetId (int lp_Array_Id, string lp_Value);
+void lib3DF4C2B9_gf_StringArray_SetValue (int lp_Array_Id, int lp_Id, string lp_Value);
+void lib3DF4C2B9_gf_StringArray_RemoveValue (int lp_Array_Id, int lp_Id);
+int lib3DF4C2B9_gf_StringArray_GetUnusedPool ();
+void lib3DF4C2B9_gf_StringArray_SetPoolUnused (int lp_Array_Id);
+
+// Library Initialization
+void lib3DF4C2B9_InitVariables ();
+

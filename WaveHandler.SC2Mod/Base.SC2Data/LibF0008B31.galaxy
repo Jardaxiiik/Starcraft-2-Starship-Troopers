@@ -1,0 +1,752 @@
+include "TriggerLibs/NativeLib"
+include "Lib8DAE26A7_h"
+
+include "LibF0008B31_h"
+
+//--------------------------------------------------------------------------------------------------
+// Library: WaveHandler_Wave
+//--------------------------------------------------------------------------------------------------
+// External Library Initialization
+void libF0008B31_InitLibraries () {
+    libNtve_InitVariables();
+    lib8DAE26A7_InitVariables();
+}
+
+// Variable Initialization
+bool libF0008B31_InitVariables_completed = false;
+
+void libF0008B31_InitVariables () {
+    int init_i;
+    int init_j;
+    int init_i1;
+
+    if (libF0008B31_InitVariables_completed) {
+        return;
+    }
+
+    libF0008B31_InitVariables_completed = true;
+
+    for (init_i = 0; init_i <= lib8DAE26A7_gv_UnitInfo__Records_MaxId; init_i += 1) {
+        for (init_j = 0; init_j <= libF0008B31_gv_Wave__Record_MaxId; init_j += 1) {
+            libF0008B31_gv_Wave__Record[init_i][init_j].lv_Units_LastId = -1;
+            for (init_i1 = 0; init_i1 <= lib8DAE26A7_gv_UnitInfo__Units_MaxId; init_i1 += 1) {
+                libF0008B31_gv_Wave__Record[init_i][init_j].lv_Units_Ids[init_i1] = -1;
+            }
+            libF0008B31_gv_Wave__Record[init_i][init_j].lv_Slots_LastId = -1;
+            for (init_i1 = 0; init_i1 <= lib8DAE26A7_gv_UnitInfo__Units_MaxId; init_i1 += 1) {
+                libF0008B31_gv_Wave__Record[init_i][init_j].lv_Slots_UnitIds[init_i1] = -1;
+            }
+            libF0008B31_gv_Wave__Record[init_i][init_j].lv_OldSlots_LastId = -1;
+            for (init_i1 = 0; init_i1 <= lib8DAE26A7_gv_UnitInfo__Units_MaxId; init_i1 += 1) {
+                libF0008B31_gv_Wave__Record[init_i][init_j].lv_OldSlots_UnitIds[init_i1] = -1;
+            }
+            for (init_i1 = 0; init_i1 <= lib8DAE26A7_gv_UnitInfo__Family_MaxId; init_i1 += 1) {
+                libF0008B31_gv_Wave__Record[init_i][init_j].lv_Families_Weight[init_i1] = 1.0;
+            }
+        }
+    }
+}
+
+// Functions
+bool libF0008B31_gf_Wave__IsIdAlreadyInSlots (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId, int lp_SlotIdLast) {
+    // Automatic Variable Declarations
+    int autoAB9C7BB0_ae;
+    int autoAB9C7BB0_var;
+
+    // Implementation
+    autoAB9C7BB0_ae = lp_SlotIdLast;
+    autoAB9C7BB0_var = 0;
+    for ( ; autoAB9C7BB0_var <= autoAB9C7BB0_ae; autoAB9C7BB0_var += 1 ) {
+        if ((lp_UnitId == libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[autoAB9C7BB0_var])) {
+            return true;
+        }
+
+    }
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_8E45AAC3") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_007D3872") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_71B06BCC") + IntToText(lp_UnitId) + StringExternal("Param/Value/lib_F0008B31_00529D36") + IntToText(lp_SlotIdLast) + StringExternal("Param/Value/lib_F0008B31_D936C225")), true);
+    return false;
+}
+
+bool libF0008B31_gf_Wave__IsIdAlreadyInWave (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId) {
+    // Automatic Variable Declarations
+    int auto74DE2391_ae;
+    int auto74DE2391_var;
+
+    // Implementation
+    auto74DE2391_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_LastId;
+    auto74DE2391_var = 0;
+    for ( ; auto74DE2391_var <= auto74DE2391_ae; auto74DE2391_var += 1 ) {
+        if ((lp_UnitId == libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_Ids[auto74DE2391_var])) {
+            return true;
+        }
+
+    }
+    return false;
+}
+
+int libF0008B31_gf_Wave__GetOldSlotById (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId) {
+    // Variable Declarations
+    int lv_unitId;
+
+    // Automatic Variable Declarations
+    int auto1DA97078_ae;
+    int auto1DA97078_var;
+
+    // Variable Initialization
+
+    // Implementation
+    auto1DA97078_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId;
+    auto1DA97078_var = 0;
+    for ( ; auto1DA97078_var <= auto1DA97078_ae; auto1DA97078_var += 1 ) {
+        lv_unitId = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[auto1DA97078_var];
+        if ((lv_unitId == lp_UnitId)) {
+            return auto1DA97078_var;
+        }
+
+    }
+    return -1;
+}
+
+int libF0008B31_gf_Wave__GetOldSlotMaxId (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Variable Declarations
+    int lv_unitId;
+    fixed lv_value;
+
+    // Automatic Variable Declarations
+    int autoFF8B43D3_ae;
+    int autoFF8B43D3_var;
+
+    // Variable Initialization
+
+    // Implementation
+    autoFF8B43D3_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId;
+    autoFF8B43D3_var = 0;
+    for ( ; autoFF8B43D3_var <= autoFF8B43D3_ae; autoFF8B43D3_var += 1 ) {
+        lv_unitId = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[autoFF8B43D3_var];
+        lv_value = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lv_unitId];
+        if ((lv_value > lp_Value)) {
+            return (autoFF8B43D3_var - 1);
+        }
+
+    }
+    return libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId;
+}
+
+int libF0008B31_gf_Wave__GetSlotTotalChances (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Variable Declarations
+    int lv_unitId;
+    fixed lv_unitMinimalValue;
+    int lv_chances;
+
+    // Automatic Variable Declarations
+    int autoD5633CF3_ae;
+    int autoD5633CF3_var;
+
+    // Variable Initialization
+
+    // Implementation
+    autoD5633CF3_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_LastId;
+    autoD5633CF3_var = 0;
+    for ( ; autoD5633CF3_var <= autoD5633CF3_ae; autoD5633CF3_var += 1 ) {
+        lv_unitId = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[autoD5633CF3_var];
+        lv_unitMinimalValue = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitMinimalValue[lv_unitId];
+        if ((lv_unitMinimalValue <= lp_Value)) {
+            lv_chances += libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_SpawnChance[lv_unitId];
+        }
+        else {
+            break;
+        }
+    }
+    return lv_chances;
+}
+
+void libF0008B31_gf_Wave_RollWaveStrategy (int lp_UnitInfo_Id, int lp_Wave_Id) {
+    // Variable Declarations
+    int lv_slotPointsLeft;
+    int lv_randomPoints;
+    int lv_slotLastId;
+    int lv_unitId;
+
+    // Automatic Variable Declarations
+    int autoFB4196D2_ae;
+    int autoFB4196D2_var;
+
+    // Variable Initialization
+    lv_slotPointsLeft = libNtve_gf_ArithmeticIntClamp((libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_MaxSlotId + 1), 1, (libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_LastId + 1));
+    lv_slotLastId = -1;
+
+    // Implementation
+    libF0008B31_gf_Wave__RollWaveStrategy_MoveSlotsToOld(lp_UnitInfo_Id, lp_Wave_Id);
+    autoFB4196D2_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_MaxSlotId;
+    autoFB4196D2_var = 0;
+    for ( ; autoFB4196D2_var <= autoFB4196D2_ae; autoFB4196D2_var += 1 ) {
+        if ((lv_slotPointsLeft <= 0)) {
+            break;
+        }
+
+        lv_randomPoints = RandomInt(1, lv_slotPointsLeft);
+        lv_slotPointsLeft -= lv_randomPoints;
+        lv_slotLastId += 1;
+        libF0008B31_gf_Wave__RollWaveStrategy_PickUnitIdToSlot(lp_UnitInfo_Id, lp_Wave_Id, autoFB4196D2_var);
+        lv_unitId = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_slotLastId];
+        libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_SpawnChance[lv_unitId] = lv_randomPoints;
+        libF0008B31_gf_Wave__RollWaveStrategy_RetrieveOldSlots(lp_UnitInfo_Id, lp_Wave_Id, lv_unitId, autoFB4196D2_var);
+        TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_6C887DA7") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_5C0F5DA2") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_D86C0721") + IntToText(lv_slotPointsLeft) + StringExternal("Param/Value/lib_F0008B31_C16BC42C") + IntToText(lv_slotLastId) + StringExternal("Param/Value/lib_F0008B31_0341A26D") + IntToText(lv_unitId) + StringExternal("Param/Value/lib_F0008B31_6F49DDC1") + IntToText(lv_randomPoints)), true);
+    }
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_LastId = lv_slotLastId;
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_BEEC752D") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_28275E7B") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_5E9818AB") + IntToText(lv_slotLastId) + StringExternal("Param/Value/lib_F0008B31_B04F94DC")), true);
+    libF0008B31_gf_Wave__Slot_SortIds(lp_UnitInfo_Id, lp_Wave_Id);
+    libF0008B31_gf_Wave__OldSlot_SortIds(lp_UnitInfo_Id, lp_Wave_Id);
+}
+
+void libF0008B31_gf_Wave_ChangeValue (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Automatic Variable Declarations
+    // Implementation
+    libF0008B31_gf_Wave_RemoveValue(lp_UnitInfo_Id, lp_Wave_Id, lp_Value);
+    libF0008B31_gf_Wave_AddValue(lp_UnitInfo_Id, lp_Wave_Id, 0.0);
+}
+
+void libF0008B31_gf_Wave_AddValue (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Variable Declarations
+    fixed lv_valueLeft;
+    fixed lv_valueAddedTotal;
+    fixed lv_valueAdded;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_valueLeft = (lp_Value + libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_ValueLeftovers);
+    lv_valueAdded = 1.0;
+
+    // Implementation
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_TotalValue += lp_Value;
+    while ((lv_valueAdded != 0.0)) {
+        lv_valueAdded = libF0008B31_gf_Wave__SpendValueRandom(lp_UnitInfo_Id, lp_Wave_Id, lv_valueLeft);
+        lv_valueAddedTotal += lv_valueAdded;
+        lv_valueLeft -= lv_valueAdded;
+    }
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_ValueLeftovers = lv_valueLeft;
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_89B6248E") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_B5BA4F32") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_A96B28DC") + FixedToText(lp_Value, c_fixedPrecisionAny) + StringExternal("Param/Value/lib_F0008B31_54376F02") + FixedToText(lv_valueAddedTotal, c_fixedPrecisionAny) + StringExternal("Param/Value/lib_F0008B31_E9F8BDE7") + FixedToText(lv_valueLeft, c_fixedPrecisionAny)), true);
+}
+
+void libF0008B31_gf_Wave_RemoveValue (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Variable Declarations
+    fixed lv_valueLeft;
+    fixed lv_valueRemovedTotal;
+    fixed lv_valueRemoved;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_valueLeft = lp_Value;
+    lv_valueRemoved = 1.0;
+
+    // Implementation
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_TotalValue += lp_Value;
+    while ((lv_valueRemoved != 0.0)) {
+        lv_valueRemoved = libF0008B31_gf_Wave__RemoveValueRandom(lp_UnitInfo_Id, lp_Wave_Id, lv_valueLeft);
+        lv_valueLeft -= lv_valueRemoved;
+        lv_valueRemovedTotal += lv_valueRemoved;
+    }
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_ValueLeftovers += lv_valueRemovedTotal;
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_DDE3818A") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_A776ABB1") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_98F7FDE5") + FixedToText(lp_Value, c_fixedPrecisionAny) + StringExternal("Param/Value/lib_F0008B31_FF763A7A") + FixedToText(lv_valueRemovedTotal, c_fixedPrecisionAny)), true);
+}
+
+void libF0008B31_gf_Wave__OldSlot_SortIds (int lp_UnitInfo_Id, int lp_Wave_Id) {
+    // Variable Declarations
+    bool lv_sortOutput;
+    int lv_backwards;
+    int lv_backwardsMinusOne;
+    int lv_forwards;
+    int lv_forwardsPlusOne;
+    int lv_id;
+    int lv_chances;
+
+    // Automatic Variable Declarations
+    int auto108A11C8_ae;
+    int auto108A11C8_var;
+
+    // Variable Initialization
+    lv_sortOutput = true;
+
+    // Implementation
+    while ((lv_sortOutput == true)) {
+        lv_sortOutput = false;
+        auto108A11C8_ae = (libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId - 1);
+        auto108A11C8_var = 0;
+        for ( ; auto108A11C8_var <= auto108A11C8_ae; auto108A11C8_var += 1 ) {
+            lv_forwards = auto108A11C8_var;
+            lv_forwardsPlusOne = (lv_forwards + 1);
+            lv_backwards = (libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId - auto108A11C8_var);
+            lv_backwardsMinusOne = (lv_backwards - 1);
+            if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_forwards]] > lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_forwardsPlusOne]])) {
+                lv_id = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_forwards];
+                libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_forwards] = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_forwardsPlusOne];
+                libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_forwardsPlusOne] = lv_id;
+                lv_sortOutput = true;
+            }
+
+            if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_backwards]] < lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_backwardsMinusOne]])) {
+                lv_id = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_backwards];
+                libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_backwards] = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_backwardsMinusOne];
+                libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_backwardsMinusOne] = lv_id;
+                lv_sortOutput = true;
+            }
+
+        }
+    }
+}
+
+int libF0008B31_gf_Wave__OldSlot_GetRandomUnitId (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Variable Declarations
+    int lv_oldSlotIdMax;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_oldSlotIdMax = libF0008B31_gf_Wave__GetSlotTotalChances(lp_UnitInfo_Id, lp_Wave_Id, lp_Value);
+
+    // Implementation
+    if ((lv_oldSlotIdMax == -1)) {
+        return -1;
+    }
+    else {
+        return libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[RandomInt(0, lv_oldSlotIdMax)];
+    }
+}
+
+void libF0008B31_gf_Wave__Slot_SortIds (int lp_UnitInfo_Id, int lp_Wave_Id) {
+    // Variable Declarations
+    bool lv_sortOutput;
+    int lv_backwards;
+    int lv_backwardsMinusOne;
+    int lv_forwards;
+    int lv_forwardsPlusOne;
+    int lv_id;
+    int lv_chances;
+
+    // Automatic Variable Declarations
+    int autoA2F755DF_ae;
+    int autoA2F755DF_var;
+
+    // Variable Initialization
+    lv_sortOutput = true;
+
+    // Implementation
+    while ((lv_sortOutput == true)) {
+        lv_sortOutput = false;
+        autoA2F755DF_ae = (libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_LastId - 1);
+        autoA2F755DF_var = 0;
+        for ( ; autoA2F755DF_var <= autoA2F755DF_ae; autoA2F755DF_var += 1 ) {
+            lv_forwards = autoA2F755DF_var;
+            lv_forwardsPlusOne = (lv_forwards + 1);
+            lv_backwards = (libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_LastId - autoA2F755DF_var);
+            lv_backwardsMinusOne = (lv_backwards - 1);
+            if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitMinimalValue[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_forwards]] > lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitMinimalValue[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_forwardsPlusOne]])) {
+                lv_id = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_forwards];
+                libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_forwards] = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_forwardsPlusOne];
+                libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_forwardsPlusOne] = lv_id;
+                lv_sortOutput = true;
+            }
+
+            if ((lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitMinimalValue[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_backwards]] < lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitMinimalValue[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_backwardsMinusOne]])) {
+                lv_id = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_backwards];
+                libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_backwards] = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_backwardsMinusOne];
+                libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lv_backwardsMinusOne] = lv_id;
+                lv_sortOutput = true;
+            }
+
+        }
+    }
+}
+
+int libF0008B31_gf_Wave__Slot_GetRandomUnitId (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Variable Declarations
+    int lv_chancesTotal;
+    int lv_chancesCounter;
+    int lv_randomChance;
+    int lv_unitId;
+    int lv_resultUnitId;
+
+    // Automatic Variable Declarations
+    int auto07430FAF_ae;
+    int auto07430FAF_var;
+
+    // Variable Initialization
+    lv_chancesTotal = libF0008B31_gf_Wave__GetSlotTotalChances(lp_UnitInfo_Id, lp_Wave_Id, lp_Value);
+    lv_randomChance = RandomInt(1, lv_chancesTotal);
+    lv_unitId = -1;
+    lv_resultUnitId = -1;
+
+    // Implementation
+    auto07430FAF_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_LastId;
+    auto07430FAF_var = 0;
+    for ( ; auto07430FAF_var <= auto07430FAF_ae; auto07430FAF_var += 1 ) {
+        lv_unitId = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[auto07430FAF_var];
+        lv_chancesCounter += libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_SpawnChance[lv_unitId];
+        if ((lv_chancesCounter >= lv_randomChance)) {
+            lv_resultUnitId = lv_unitId;
+            break;
+        }
+
+    }
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_F2716109") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_A9D42FB4") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_BE06B6B7") + IntToText(lv_unitId) + StringExternal("Param/Value/lib_F0008B31_552860BB") + IntToText(lv_chancesTotal) + StringExternal("Param/Value/lib_F0008B31_57403414") + IntToText(lv_randomChance)), true);
+    return lv_resultUnitId;
+}
+
+fixed libF0008B31_gf_Wave__SpendValueRandom (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Variable Declarations
+    int lv_unitId;
+    int lv_resultCount;
+    fixed lv_restultValue;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_unitId = libF0008B31_gf_Wave__Slot_GetRandomUnitId(lp_UnitInfo_Id, lp_Wave_Id, lp_Value);
+
+    // Implementation
+    if ((lv_unitId == -1)) {
+        TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_D4EDE667") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_70F887C6") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_15B412B1") + IntToText(lv_unitId) + StringExternal("Param/Value/lib_F0008B31_FD1258CF")), true);
+        return 0.0;
+    }
+
+    lv_resultCount = FloorI((lp_Value / lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lv_unitId]));
+    lv_restultValue = (lv_resultCount * lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lv_unitId]);
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Count[lv_unitId] += lv_resultCount;
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_8B1E8625") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_EC146C3A") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_B55B9686") + IntToText(lv_unitId) + StringExternal("Param/Value/lib_F0008B31_FB8D108D") + IntToText(lv_resultCount) + StringExternal("Param/Value/lib_F0008B31_AA7A7A22") + FixedToText(lv_restultValue, c_fixedPrecisionAny) + StringExternal("Param/Value/lib_F0008B31_2F822609") + StringExternal("Param/Value/lib_F0008B31_ADDE8A8E") + FixedToText(lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lv_unitId], c_fixedPrecisionAny)), true);
+    return lv_restultValue;
+}
+
+fixed libF0008B31_gf_Wave__RemoveValueRandom (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Variable Declarations
+    int lv_unitId;
+    int lv_unitCount;
+    fixed lv_unitValue;
+    int lv_maxCount;
+    int lv_resultCount;
+    fixed lv_resultValue;
+    bool lv_old;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_unitId = libF0008B31_gf_Wave__OldSlot_GetRandomUnitId(lp_UnitInfo_Id, lp_Wave_Id, lp_Value);
+
+    // Implementation
+    if ((lv_unitId == -1)) {
+        lv_unitId = libF0008B31_gf_Wave__Slot_GetRandomUnitId(lp_UnitInfo_Id, lp_UnitInfo_Id, lp_Value);
+    }
+    else {
+        lv_old = true;
+    }
+    if ((lv_unitId == -1)) {
+        TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_072C53DF") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_367C825C") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_7483FBFF") + IntToText(lv_unitId) + StringExternal("Param/Value/lib_F0008B31_3D489443")), true);
+        return 0.0;
+    }
+
+    lv_unitCount = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Count[lv_unitId];
+    lv_unitValue = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitValue[lv_unitId];
+    lv_maxCount = FloorI((lp_Value / lv_unitValue));
+    if ((lv_maxCount > lv_unitCount)) {
+        lv_resultCount = lv_unitCount;
+    }
+    else {
+        lv_resultCount = lv_maxCount;
+    }
+    lv_resultValue = (lv_resultCount * lv_unitValue);
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Count[lv_unitId] -= lv_resultCount;
+    if ((lv_old == true) && (libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Count[lv_unitId] <= 0)) {
+        libF0008B31_gf_Wave__OldSlots_RemoveAtIndex(lp_UnitInfo_Id, lp_Wave_Id, libF0008B31_gf_Wave__GetOldSlotById(lp_UnitInfo_Id, lp_Wave_Id, lv_unitId));
+    }
+
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_A1036676") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_09039667") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_8E418840") + IntToText(lv_unitId) + StringExternal("Param/Value/lib_F0008B31_9B6B542D") + IntToText(lv_resultCount) + StringExternal("Param/Value/lib_F0008B31_8F9310DC") + FixedToText(lv_resultValue, c_fixedPrecisionAny) + StringExternal("Param/Value/lib_F0008B31_DEC6F01B") + StringExternal("Param/Value/lib_F0008B31_A0918AF7") + FixedToText(lv_unitValue, c_fixedPrecisionAny)), true);
+    return lv_resultValue;
+}
+
+void libF0008B31_gf_Wave__RollWaveStrategy_PickUnitIdToSlot (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_SlotId) {
+    // Variable Declarations
+    fixed lv_weightTotal;
+    fixed lv_weightCounter;
+    fixed lv_randomWeight;
+    int lv_unitId;
+    int lv_SlotIdMinusOne;
+    int lv_pickedUnitId;
+
+    // Automatic Variable Declarations
+    int auto22D75EDE_ae;
+    int auto22D75EDE_var;
+    int auto0E9367FA_ae;
+    int auto0E9367FA_var;
+
+    // Variable Initialization
+    lv_weightTotal = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_TotalUnitWeight;
+    lv_unitId = -1;
+    lv_SlotIdMinusOne = (lp_SlotId - 1);
+    lv_pickedUnitId = -1;
+
+    // Implementation
+    auto22D75EDE_ae = (lp_SlotId - 1);
+    auto22D75EDE_var = 0;
+    for ( ; auto22D75EDE_var <= auto22D75EDE_ae; auto22D75EDE_var += 1 ) {
+        lv_unitId = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[auto22D75EDE_var];
+        lv_weightTotal -= libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Weight[lv_unitId];
+    }
+    lv_randomWeight = RandomFixed(0.0, lv_weightTotal);
+    auto0E9367FA_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_LastId;
+    auto0E9367FA_var = 0;
+    for ( ; auto0E9367FA_var <= auto0E9367FA_ae; auto0E9367FA_var += 1 ) {
+        lv_unitId = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_Ids[auto0E9367FA_var];
+        if ((libF0008B31_gf_Wave__IsIdAlreadyInSlots(lp_UnitInfo_Id, lp_Wave_Id, lv_unitId, lp_SlotId) == false)) {
+            lv_pickedUnitId = lv_unitId;
+            lv_weightCounter += libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Weight[lv_unitId];
+        }
+
+        if ((lv_weightCounter >= lv_randomWeight)) {
+            break;
+        }
+
+    }
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lp_SlotId] = lv_pickedUnitId;
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_C26743FA") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_C60DD192") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_53C74309") + IntToText(lp_SlotId) + StringExternal("Param/Value/lib_F0008B31_5270A427") + IntToText(lv_pickedUnitId) + StringExternal("Param/Value/lib_F0008B31_D6B9F80F") + IntToText(libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_LastId) + StringExternal("Param/Value/lib_F0008B31_19CA9F6F")), true);
+}
+
+void libF0008B31_gf_Wave__RollWaveStrategy_MoveSlotsToOld (int lp_UnitInfo_Id, int lp_Wave_Id) {
+    // Automatic Variable Declarations
+    int autoFF5B8A68_ae;
+    int autoFF5B8A68_var;
+
+    // Implementation
+    autoFF5B8A68_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_LastId;
+    autoFF5B8A68_var = 0;
+    for ( ; autoFF5B8A68_var <= autoFF5B8A68_ae; autoFF5B8A68_var += 1 ) {
+        if ((libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Count[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[autoFF5B8A68_var]] > 0)) {
+            libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId += 1;
+            libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId] = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[autoFF5B8A68_var];
+        }
+
+    }
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_LastId = 0;
+}
+
+void libF0008B31_gf_Wave__RollWaveStrategy_RetrieveOldSlots (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId, int lp_SlotId) {
+    // Automatic Variable Declarations
+    int autoF8DC06DD_ae;
+    int autoF8DC06DD_var;
+
+    // Implementation
+    autoF8DC06DD_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId;
+    autoF8DC06DD_var = 0;
+    for ( ; autoF8DC06DD_var <= autoF8DC06DD_ae; autoF8DC06DD_var += 1 ) {
+        if ((libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[autoF8DC06DD_var] == lp_UnitId)) {
+            libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[lp_SlotId] = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[autoF8DC06DD_var];
+            libF0008B31_gf_Wave__OldSlots_RemoveAtIndex(lp_UnitInfo_Id, lp_Wave_Id, autoF8DC06DD_var);
+        }
+
+    }
+}
+
+void libF0008B31_gf_Wave__OldSlots_RemoveAtIndex (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_Index) {
+    // Variable Declarations
+    int lv_idPlusOne;
+
+    // Automatic Variable Declarations
+    int autoDBB4D9E9_ae;
+    int autoDBB4D9E9_var;
+
+    // Variable Initialization
+
+    // Implementation
+    if ((lp_Index == -1)) {
+        return ;
+    }
+
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId -= 1;
+    autoDBB4D9E9_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId;
+    autoDBB4D9E9_var = lp_Index;
+    for ( ; autoDBB4D9E9_var <= autoDBB4D9E9_ae; autoDBB4D9E9_var += 1 ) {
+        lv_idPlusOne = (autoDBB4D9E9_var + 1);
+        libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[autoDBB4D9E9_var] = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[lv_idPlusOne];
+    }
+}
+
+void libF0008B31_gf_Wave_AddRandomUnit (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value) {
+    // Variable Declarations
+    int lv_unitInfo_maxId;
+    int lv_unitId;
+    int lv_pickedUnitId;
+    fixed lv_weightTotal;
+    fixed lv_weightCounter;
+    fixed lv_weightRandom;
+
+    // Automatic Variable Declarations
+    int auto3B0BC9A4_ae;
+    int auto3B0BC9A4_var;
+    int autoD1A249E6_ae;
+    int autoD1A249E6_var;
+
+    // Variable Initialization
+    lv_unitInfo_maxId = lib8DAE26A7_gf_UnitInfo__GetUnitId_MaxValue(lp_UnitInfo_Id, lp_Value);
+    lv_pickedUnitId = -1;
+
+    // Implementation
+    if ((libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_LastId >= lv_unitInfo_maxId)) {
+        TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_A375913A") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_668A8163") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_EBDD8C06")), true);
+        return ;
+    }
+
+    auto3B0BC9A4_ae = lv_unitInfo_maxId;
+    auto3B0BC9A4_var = 0;
+    for ( ; auto3B0BC9A4_var <= auto3B0BC9A4_ae; auto3B0BC9A4_var += 1 ) {
+        lv_unitId = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[auto3B0BC9A4_var];
+        if ((libF0008B31_gf_Wave__IsIdAlreadyInWave(lp_UnitInfo_Id, lp_Wave_Id, lv_unitId) == false)) {
+            lv_weightTotal += libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Weight[lv_unitId];
+        }
+
+    }
+    lv_weightRandom = RandomFixed(0.0, lv_weightTotal);
+    autoD1A249E6_ae = lv_unitInfo_maxId;
+    autoD1A249E6_var = 0;
+    for ( ; autoD1A249E6_var <= autoD1A249E6_ae; autoD1A249E6_var += 1 ) {
+        lv_unitId = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitIdsSorted[autoD1A249E6_var];
+        if ((libF0008B31_gf_Wave__IsIdAlreadyInWave(lp_UnitInfo_Id, lp_Wave_Id, lv_unitId) == false)) {
+            lv_pickedUnitId = lv_unitId;
+        }
+        else {
+            lv_weightCounter += libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Weight[lv_unitId];
+        }
+        if ((lv_weightCounter >= lv_weightRandom)) {
+            break;
+        }
+
+    }
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_EFC10F90") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_48D3C67F") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_3B4020F6") + IntToText(lv_pickedUnitId) + StringExternal("Param/Value/lib_F0008B31_8B093A10") + IntToText(libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_LastId) + StringExternal("Param/Value/lib_F0008B31_F4C22B90") + FixedToText(lv_weightTotal, c_fixedPrecisionAny) + StringExternal("Param/Value/lib_F0008B31_68C564EB") + FixedToText(lv_weightRandom, c_fixedPrecisionAny) + StringExternal("Param/Value/lib_F0008B31_CA71CBEB")), true);
+    libF0008B31_gf_Wave_AddUnit(lp_UnitInfo_Id, lp_Wave_Id, lv_pickedUnitId);
+}
+
+void libF0008B31_gf_Wave_AddUnit (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId) {
+    // Variable Declarations
+    int lv_units_lastId;
+
+    // Automatic Variable Declarations
+    int autoA993BFC3_ae;
+    int autoA993BFC3_var;
+
+    // Variable Initialization
+    lv_units_lastId = (libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_LastId + 1);
+
+    // Implementation
+    if (((lp_UnitId == -1) || (lv_units_lastId > libF0008B31_gv_Wave__UnitTypeMaxId))) {
+        TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_595CA1F3") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_FC029F6C") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_D519EAA7") + IntToText(lp_UnitId) + StringExternal("Param/Value/lib_F0008B31_F2A63EDB")), true);
+        return ;
+    }
+
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_LastId = lv_units_lastId;
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Units_Ids[lv_units_lastId] = lp_UnitId;
+    TriggerDebugOutput(1, (StringExternal("Param/Value/lib_F0008B31_56D75086") + IntToText(lp_UnitInfo_Id) + StringExternal("Param/Value/lib_F0008B31_F25601F8") + IntToText(lp_Wave_Id) + StringExternal("Param/Value/lib_F0008B31_BD52A432") + IntToText(lp_UnitId) + StringExternal("Param/Value/lib_F0008B31_0042FE9F")), true);
+    autoA993BFC3_ae = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_FamilyId_LastId;
+    autoA993BFC3_var = 0;
+    for ( ; autoA993BFC3_var <= autoA993BFC3_ae; autoA993BFC3_var += 1 ) {
+        libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Families_Weight[autoA993BFC3_var] *= lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_StringArray_UnitFamilyMultipliers[lp_UnitId][autoA993BFC3_var];
+    }
+    libF0008B31_gf_Wave__RecalculateUnitWeights(lp_UnitInfo_Id, lp_Wave_Id);
+}
+
+void libF0008B31_gf_Wave_SetSlotCount (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_MaxSlotCount) {
+    // Variable Declarations
+    int lv_maxSlotId;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_maxSlotId = (lp_MaxSlotCount - 1);
+
+    // Implementation
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_MaxSlotId = lv_maxSlotId;
+    libF0008B31_gf_Wave_RollWaveStrategy(lp_UnitInfo_Id, lp_Wave_Id);
+}
+
+void libF0008B31_gf_Wave__RecalculateUnitWeights (int lp_UnitInfo_Id, int lp_Wave_Id) {
+    // Variable Declarations
+    int lv_unitId;
+
+    // Automatic Variable Declarations
+    int auto66FCF970_ae;
+    int auto66FCF970_var;
+    int auto37D0BFCB_ae;
+    int auto37D0BFCB_var;
+
+    // Variable Initialization
+
+    // Implementation
+    libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_TotalUnitWeight = 0.0;
+    auto66FCF970_ae = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_LastId;
+    auto66FCF970_var = 0;
+    for ( ; auto66FCF970_var <= auto66FCF970_ae; auto66FCF970_var += 1 ) {
+        lv_unitId = auto66FCF970_var;
+        libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Weight[lv_unitId] = 1;
+        auto37D0BFCB_ae = lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_FamilyId_LastId;
+        auto37D0BFCB_var = 0;
+        for ( ; auto37D0BFCB_var <= auto37D0BFCB_ae; auto37D0BFCB_var += 1 ) {
+            libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Weight[lv_unitId] = auto37D0BFCB_var;
+            libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Weight[lv_unitId] *= libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Families_Weight[auto37D0BFCB_var];
+        }
+        libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_TotalUnitWeight += libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Weight[lv_unitId];
+    }
+}
+
+unitgroup libF0008B31_gf_Wave_GetNewUnitGroupHidden (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_Owner) {
+    // Variable Declarations
+    unitgroup lv_unitGroup;
+    int lv_unitId;
+
+    // Automatic Variable Declarations
+    int autoB21DCDA9_ae;
+    int autoB21DCDA9_var;
+    int auto34E4F454_n;
+    int auto34E4F454_i;
+    int auto4CD000B3_ae;
+    int auto4CD000B3_var;
+    int auto4A389ACF_n;
+    int auto4A389ACF_i;
+
+    // Variable Initialization
+    lv_unitGroup = UnitGroupEmpty();
+
+    // Implementation
+    autoB21DCDA9_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_LastId;
+    autoB21DCDA9_var = 0;
+    for ( ; autoB21DCDA9_var <= autoB21DCDA9_ae; autoB21DCDA9_var += 1 ) {
+        lv_unitId = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_OldSlots_UnitIds[autoB21DCDA9_var];
+        auto34E4F454_n = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Count[lv_unitId];
+        for (auto34E4F454_i = 1; auto34E4F454_i <= auto34E4F454_n; auto34E4F454_i += 1) {
+            libNtve_gf_CreateUnitsAtPoint2(1, lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitTypes[lv_unitId], c_unitCreateIgnorePlacement, lp_Owner, libNtve_gf_PointFromXYZ(0.0, 0.0, 0.0));
+            UnitGroupAdd(lv_unitGroup, UnitLastCreated());
+            libNtve_gf_ShowHideUnit(UnitLastCreated(), false);
+        }
+    }
+    auto4CD000B3_ae = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_LastId;
+    auto4CD000B3_var = 0;
+    for ( ; auto4CD000B3_var <= auto4CD000B3_ae; auto4CD000B3_var += 1 ) {
+        lv_unitId = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_Slots_UnitIds[auto4CD000B3_var];
+        auto4A389ACF_n = libF0008B31_gv_Wave__Record[lp_UnitInfo_Id][lp_Wave_Id].lv_UnitId_Count[lv_unitId];
+        for (auto4A389ACF_i = 1; auto4A389ACF_i <= auto4A389ACF_n; auto4A389ACF_i += 1) {
+            libNtve_gf_CreateUnitsAtPoint2(1, lib8DAE26A7_gv_UnitInfo__Record[lp_UnitInfo_Id].lv_Units_UnitTypes[lv_unitId], c_unitCreateIgnorePlacement, lp_Owner, libNtve_gf_PointFromXYZ(0.0, 0.0, 0.0));
+            UnitGroupAdd(lv_unitGroup, UnitLastCreated());
+            libNtve_gf_ShowHideUnit(UnitLastCreated(), false);
+        }
+    }
+    return lv_unitGroup;
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+bool libF0008B31_InitLib_completed = false;
+
+void libF0008B31_InitLib () {
+    if (libF0008B31_InitLib_completed) {
+        return;
+    }
+
+    libF0008B31_InitLib_completed = true;
+
+    libF0008B31_InitLibraries();
+    libF0008B31_InitVariables();
+}
+
+include "Lib8DAE26A7"
+

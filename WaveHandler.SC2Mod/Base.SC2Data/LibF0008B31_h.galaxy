@@ -1,0 +1,59 @@
+include "Lib8DAE26A7_h"
+
+//--------------------------------------------------------------------------------------------------
+// Library: WaveHandler_Wave
+//--------------------------------------------------------------------------------------------------
+// Constants
+const int libF0008B31_gv_Wave__UnitTypeMaxId = 40;
+const int libF0008B31_gv_Wave__Record_MaxId = 10;
+
+// Structures
+struct libF0008B31_gs_Wave__Record {
+    fixed lv_TotalValue;
+    fixed lv_ValueLeftovers;
+    fixed lv_TotalUnitWeight;
+    fixed[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_UnitId_Weight;
+    int[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_UnitId_Count;
+    int[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_UnitId_SpawnChance;
+    int lv_Units_LastId;
+    int[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_Units_Ids;
+    int lv_Slots_MaxSlotId;
+    int lv_Slots_LastId;
+    int[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_Slots_UnitIds;
+    int lv_OldSlots_LastId;
+    int[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_OldSlots_UnitIds;
+    fixed[lib8DAE26A7_gv_UnitInfo__Family_MaxId + 1] lv_Families_Weight;
+};
+
+// Variable Declarations
+libF0008B31_gs_Wave__Record[lib8DAE26A7_gv_UnitInfo__Records_MaxId + 1][libF0008B31_gv_Wave__Record_MaxId + 1] libF0008B31_gv_Wave__Record;
+
+// Function Declarations
+bool libF0008B31_gf_Wave__IsIdAlreadyInSlots (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId, int lp_SlotIdLast);
+bool libF0008B31_gf_Wave__IsIdAlreadyInWave (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId);
+int libF0008B31_gf_Wave__GetOldSlotById (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId);
+int libF0008B31_gf_Wave__GetOldSlotMaxId (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+int libF0008B31_gf_Wave__GetSlotTotalChances (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+void libF0008B31_gf_Wave_RollWaveStrategy (int lp_UnitInfo_Id, int lp_Wave_Id);
+void libF0008B31_gf_Wave_ChangeValue (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+void libF0008B31_gf_Wave_AddValue (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+void libF0008B31_gf_Wave_RemoveValue (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+void libF0008B31_gf_Wave__OldSlot_SortIds (int lp_UnitInfo_Id, int lp_Wave_Id);
+int libF0008B31_gf_Wave__OldSlot_GetRandomUnitId (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+void libF0008B31_gf_Wave__Slot_SortIds (int lp_UnitInfo_Id, int lp_Wave_Id);
+int libF0008B31_gf_Wave__Slot_GetRandomUnitId (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+fixed libF0008B31_gf_Wave__SpendValueRandom (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+fixed libF0008B31_gf_Wave__RemoveValueRandom (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+void libF0008B31_gf_Wave__RollWaveStrategy_PickUnitIdToSlot (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_SlotId);
+void libF0008B31_gf_Wave__RollWaveStrategy_MoveSlotsToOld (int lp_UnitInfo_Id, int lp_Wave_Id);
+void libF0008B31_gf_Wave__RollWaveStrategy_RetrieveOldSlots (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId, int lp_SlotId);
+void libF0008B31_gf_Wave__OldSlots_RemoveAtIndex (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_Index);
+void libF0008B31_gf_Wave_AddRandomUnit (int lp_UnitInfo_Id, int lp_Wave_Id, fixed lp_Value);
+void libF0008B31_gf_Wave_AddUnit (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_UnitId);
+void libF0008B31_gf_Wave_SetSlotCount (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_MaxSlotCount);
+void libF0008B31_gf_Wave__RecalculateUnitWeights (int lp_UnitInfo_Id, int lp_Wave_Id);
+unitgroup libF0008B31_gf_Wave_GetNewUnitGroupHidden (int lp_UnitInfo_Id, int lp_Wave_Id, int lp_Owner);
+
+// Library Initialization
+void libF0008B31_InitVariables ();
+

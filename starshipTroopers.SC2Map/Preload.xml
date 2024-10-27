@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Preload>
+<Actor id="SYSTEM_ActorConfig"/>
+<Actor id="Aiur_Trees_Giant" Variations="0"/>
+<Actor id="VoidAmonCrystalCatalystFloatingDoodad"/>
+<Actor id="XelNaga_GiantCrystal" Variations="0"/>
+<Actor id="CharCrystalHuge" Variations="1"/>
+<Actor id="CharCrystalLarge" Variations="0"/>
+<Actor id="CrystalLarge" Variations="1"/>
+<Terrain id="KorhalOutskirts"/>
+<Unit id="Roach"/>
+<Unit id="PlanetaryFortress"/>
+<Unit id="CreepTumorBurrowed"/>
+<Unit id="VespeneGeyser"/>
+<Unit id="SpecialOpsDropship"/>
+<Unit id="RoachCorpser"/>
+<Unit id="PrimalRoach"/>
+<Unit id="Marauder_BlackOps"/>
+</Preload>

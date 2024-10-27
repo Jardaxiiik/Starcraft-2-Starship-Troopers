@@ -1,0 +1,40 @@
+include "TriggerLibs/natives"
+
+//--------------------------------------------------------------------------------------------------
+// Library: StringPool
+//--------------------------------------------------------------------------------------------------
+// Constants
+const int libA83BCBE2_gv_StringPool__StringTypeMaxCount = 30;
+const int libA83BCBE2_gv_StringPool__RecordMaxCount = 50;
+
+// Structures
+struct libA83BCBE2_gs_StringPool__Record {
+    bool lv_IsUsed;
+    int lv_StringType_HighestId;
+    fixed[libA83BCBE2_gv_StringPool__StringTypeMaxCount + 1] lv_StringType_Value;
+    fixed[libA83BCBE2_gv_StringPool__StringTypeMaxCount + 1] lv_StringType_Weight;
+    string[libA83BCBE2_gv_StringPool__StringTypeMaxCount + 1] lv_StringType;
+};
+
+// Variable Declarations
+libA83BCBE2_gs_StringPool__Record[libA83BCBE2_gv_StringPool__RecordMaxCount + 1] libA83BCBE2_gv_StringPool__Record;
+
+// Function Declarations
+int libA83BCBE2_gf_StringPool__GetMinValueId (int lp_Pool_Id, fixed lp_MinValule);
+int libA83BCBE2_gf_StringPool__GetMaxValueId (int lp_Pool_Id, fixed lp_MaxValule);
+fixed libA83BCBE2_gf_StringPool__GetTotalWeight (int lp_Pool_Id, int lp_MinValueId, int lp_MaxValueId);
+int libA83BCBE2_gf_StringPool__GetStringIdByString (int lp_Pool_Id, string lp_String);
+void libA83BCBE2_gf_StringPool__AddStringType (int lp_Pool_Id, string lp_StringType, fixed lp_Value, fixed lp_Weight);
+int libA83BCBE2_gf_StringPool_GetStringIdByRandom (int lp_Pool_Id, fixed lp_MinValue, fixed lp_MaxValue);
+string libA83BCBE2_gf_StringPool_GetStringTypeById (int lp_Pool_Id, int lp_StringId);
+fixed libA83BCBE2_gf_StringPool_GetStringValueById (int lp_Pool_Id, int lp_StringId);
+fixed libA83BCBE2_gf_StringPool_GetStringWeightById (int lp_Pool_Id, int lp_StringId);
+bool libA83BCBE2_gf_StringPool_IsPoolUsed (int lp_Pool_Id);
+void libA83BCBE2_gf_StringPool_SetStringType (int lp_Pool_Id, string lp_StringType, fixed lp_Value, fixed lp_Weight);
+void libA83BCBE2_gf_StringPool_RemoveStringType (int lp_Pool_Id, string lp_StringType);
+int libA83BCBE2_gf_StringPool_GetUnusedPool ();
+void libA83BCBE2_gf_StringPool_SetPoolUnused (int lp_Pool_Id);
+
+// Library Initialization
+void libA83BCBE2_InitVariables ();
+

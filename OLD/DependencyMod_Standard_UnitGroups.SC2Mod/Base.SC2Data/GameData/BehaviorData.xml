@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CBehaviorWander id="WanderingUnit">
+        <EditorCategories value="AbilityorEffectType:Units"/>
+        <Range value="1"/>
+        <Delay value="5"/>
+    </CBehaviorWander>
+    <CBehaviorBuff id="WanderingUnit_WanderingId">
+        <InfoFlags index="Hidden" value="1"/>
+        <EditorCategories value="AbilityorEffectType:Units"/>
+        <MaxStackCount value="10"/>
+    </CBehaviorBuff>
+</Catalog>

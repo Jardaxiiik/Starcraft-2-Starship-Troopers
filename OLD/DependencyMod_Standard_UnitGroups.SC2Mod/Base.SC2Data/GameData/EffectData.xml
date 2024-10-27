@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CEffectCreatePersistent id="WanderingUnit_Attack_CP">
+        <EditorCategories value=""/>
+        <WhichLocation Value="CasterUnit"/>
+    </CEffectCreatePersistent>
+</Catalog>

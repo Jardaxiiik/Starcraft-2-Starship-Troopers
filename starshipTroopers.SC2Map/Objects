@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PlacedObjects Version="27">
+    <ObjectDoodad Id="725890093" Variation="1" Position="36,82,11" Rotation="3.9333" Scale="0.976,0.976,0.976" Type="CrystalLarge">
+        <Flag Index="HeightAbsolute" Value="1"/>
+    </ObjectDoodad>
+    <ObjectDoodad Id="3268830" Position="35,92,10.9995" Rotation="3.263" Scale="1.1628,1.1628,1.1628" Type="CharCrystalLarge">
+        <Flag Index="HeightAbsolute" Value="1"/>
+    </ObjectDoodad>
+    <ObjectDoodad Id="269765755" Variation="1" Position="36.5,87.5,10.9995" Rotation="4.7094" Scale="0.9548,0.9548,0.9548" Type="CharCrystalHuge">
+        <Flag Index="HeightAbsolute" Value="1"/>
+    </ObjectDoodad>
+    <ObjectDoodad Id="1024213554" Position="230.693,24.9118,-2.403" Rotation="3.5222" Scale="1.3273,1.3273,0.8957" Type="VoidAmonCrystalCatalystFloatingDoodad">
+        <Flag Index="HeightOffset" Value="1"/>
+        <Flag Index="HeightAbsolute" Value="1"/>
+    </ObjectDoodad>
+    <ObjectDoodad Id="2111414782" Position="35.7163,97.6633,10.9995" Rotation="5.5275" Scale="1,1,1" Type="XelNaga_GiantCrystal">
+        <Flag Index="HeightAbsolute" Value="1"/>
+    </ObjectDoodad>
+    <ObjectDoodad Id="372083606" Position="253.782,114.1853,18.9997" Rotation="5.235" Scale="1.0822,1.0822,1.0822" Type="Aiur_Trees_Giant">
+        <Flag Index="HeightAbsolute" Value="1"/>
+        <Flag Index="ForcePlacement" Value="1"/>
+    </ObjectDoodad>
+    <ObjectDoodad Id="12085871" Position="230.905,25.143,4.4504" Rotation="6.1054" Scale="1.3273,1.3273,0.8957" Type="VoidAmonCrystalCatalystFloatingDoodad">
+        <Flag Index="HeightOffset" Value="1"/>
+        <Flag Index="HeightAbsolute" Value="1"/>
+        <Flag Index="ForcePlacement" Value="1"/>
+        <Flag Index="NoDoodadFootprint" Value="1"/>
+    </ObjectDoodad>
+    <ObjectPoint Id="1043630057" Position="123.66,192.8698,0" Scale="1,1,1" Type="Normal" Name="Bad0" Color="0,0,0,0"/>
+    <ObjectPoint Id="1702652735" Position="126.338,160.365,0" Scale="1,1,1" Type="Normal" Name="Good0" Color="0,0,0,0"/>
+    <ObjectPoint Id="1846770618" Position="128.1264,126.8188,0" Scale="1,1,1" Type="Normal" Name="Middle" Color="0,0,0,0"/>
+    <ObjectPoint Id="145020999" Position="220.0078,36.1694,0" Scale="1,1,1" Type="Normal" Name="Right Offscreen" Color="0,0,0,0"/>
+    <ObjectPoint Id="1280874809" Position="35.955,218.051,0" Scale="1,1,1" Type="Normal" Name="Left Offscreen" Color="0,0,0,0"/>
+</PlacedObjects>

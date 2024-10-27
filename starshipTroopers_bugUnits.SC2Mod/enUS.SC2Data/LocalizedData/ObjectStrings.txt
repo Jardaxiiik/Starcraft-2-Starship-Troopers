@@ -1,0 +1,9 @@
+﻿Actor/EditorPrefix/BugHole_Magma=[BUG HOLE]
+Actor/Name/BugHole_Magma=BugHole_Magma
+Behavior/EditorPrefix/WarriorJump=[WARRIOR BUG]
+Behavior/Name/WarriorJump=Warrior Jump
+Model/EditorPrefix/BugHole_Magma=[BUG HOLE]
+Model/Name/BugHole_Magma=BugHole_Magma
+Mover/EditorPrefix/MediumBugClimbing=[BUG]
+Mover/Name/MediumBugClimbing=MediumBugClimbing
+Unit/EditorPrefix/BugHole_Magma=[BUG HOLE]

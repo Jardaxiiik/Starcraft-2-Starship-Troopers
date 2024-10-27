@@ -1,0 +1,7 @@
+﻿DocInfo/DescLong=Completely devoid of any description whatsoever.
+DocInfo/DescShort=Any
+DocInfo/Name=Just Another StarCraft II Mod
+Effect/Name/WanderingUnit_Attack_CP=WanderingUnit_Attack_CP
+Param/Value/lib_B5016834_117CE7E4=Giantian
+Param/Value/lib_B5016834_624FC110=UnitGroups_SetUnit: ERROR - family Pool is full. We cannot add new one.
+Param/Value/lib_B5016834_EBFB4F53=Eliminate wave of giant flyers.

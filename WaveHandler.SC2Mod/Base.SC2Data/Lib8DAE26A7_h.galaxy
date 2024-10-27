@@ -1,0 +1,48 @@
+include "TriggerLibs/natives"
+
+//--------------------------------------------------------------------------------------------------
+// Library: WaveHandler_UnitInfo
+//--------------------------------------------------------------------------------------------------
+// Constants
+const int lib8DAE26A7_gv_UnitInfo__Family_MaxId = 20;
+const int lib8DAE26A7_gv_UnitInfo__Units_MaxId = 50;
+const int lib8DAE26A7_gv_UnitInfo__Records_MaxId = 1;
+
+// Structures
+struct lib8DAE26A7_gs_UnitInfo__Record {
+    bool lv_isUsed;
+    int[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_Units_UnitIdsSorted;
+    int lv_Units_LastId;
+    fixed[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_Units_UnitValue;
+    string[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_Units_UnitTypes;
+    int[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_Units_UnitMinimalCount;
+    fixed[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1] lv_Units_UnitMinimalValue;
+    int lv_FamilyId_LastId;
+    string[lib8DAE26A7_gv_UnitInfo__Family_MaxId + 1] lv_FamilyId_Name;
+    fixed[lib8DAE26A7_gv_UnitInfo__Units_MaxId + 1][lib8DAE26A7_gv_UnitInfo__Family_MaxId + 1] lv_StringArray_UnitFamilyMultipliers;
+};
+
+// Variable Declarations
+lib8DAE26A7_gs_UnitInfo__Record[lib8DAE26A7_gv_UnitInfo__Records_MaxId + 1] lib8DAE26A7_gv_UnitInfo__Record;
+
+// Function Declarations
+int lib8DAE26A7_gf_UnitInfo__GetUnitId_MaxValue (int lp_UnitInfo_Id, fixed lp_MaxValule);
+int lib8DAE26A7_gf_UnitInfo__GetUnitId_MinValue (int lp_UnitInfo_Id, fixed lp_MinValule);
+string lib8DAE26A7_gf_UnitInfo__GetUnitType_ById (int lp_UnitInfo_Id, int lp_Unit_Id);
+fixed lib8DAE26A7_gf_UnitInfo__GetUnitValue_ById (int lp_UnitInfo_Id, int lp_Id);
+fixed lib8DAE26A7_gf_UnitInfo__GetUnitMinimalCount_ById (int lp_UnitInfo_Id, int lp_Id);
+fixed lib8DAE26A7_gf_UnitInfo__GetUnitFamilyMultiplier (int lp_UnitInfo_Id, string lp_UnitType, string lp_FamilyName);
+int lib8DAE26A7_gf_UnitInfo__GetUnitHighestId (int lp_UnitInfo_Id);
+int lib8DAE26A7_gf_UnitInfo__GetFamilyHighestId (int lp_UnitInfo_Id);
+void lib8DAE26A7_gf_UnitInfo_AddUnit (int lp_UnitInfo_Id, string lp_Unit_Type, fixed lp_Unit_Value, int lp_Unit_MinimalCount);
+void lib8DAE26A7_gf_UnitInfo_AddFamily (int lp_UnitInfo_Id, string lp_FamilyName);
+void lib8DAE26A7_gf_UnitInfo_SetUnitFamilyMultiplier (int lp_UnitInfo_Id, string lp_UnitType, string lp_FamilyName, fixed lp_FamilyMultiplier);
+void lib8DAE26A7_gf_UnitInfo__SortUnitIds (int lp_UnitInfo_Id);
+int lib8DAE26A7_gf_UnitInfo__GetUnitId_ByUnitType (int lp_UnitInfo_Id, string lp_UnitType);
+int lib8DAE26A7_gf_UnitInfo__GetFamilyId_ByFamilyName (int lp_UnitInfo_Id, string lp_FamilyName);
+int lib8DAE26A7_gf_UnitInfo_GetUnusedUnitInfoId ();
+void lib8DAE26A7_gf_UnitInfo_SetUnitInfoUnused (int lp_UnitInfo_Id);
+
+// Library Initialization
+void lib8DAE26A7_InitVariables ();
+

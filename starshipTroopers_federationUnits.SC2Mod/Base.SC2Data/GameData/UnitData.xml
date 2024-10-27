@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Catalog>
+    <CUnit id="Marine_BlackOps">
+        <Name value="Unit/Name/StarshipTroopersMarauder"/>
+    </CUnit>
+    <CUnit id="PlanetaryFortress">
+        <Name value="Unit/Name/StrongholdTower"/>
+    </CUnit>
+</Catalog>

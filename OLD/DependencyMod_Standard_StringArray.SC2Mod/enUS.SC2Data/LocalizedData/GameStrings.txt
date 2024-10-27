@@ -1,0 +1,4 @@
+﻿DocInfo/DescLong=Completely devoid of any description whatsoever.
+DocInfo/DescShort=Any
+DocInfo/Name=Just Another StarCraft II Mod
+Param/Value/lib_3DF4C2B9_98B4C69B=StringArray_AddValue: Failed because array is already full.

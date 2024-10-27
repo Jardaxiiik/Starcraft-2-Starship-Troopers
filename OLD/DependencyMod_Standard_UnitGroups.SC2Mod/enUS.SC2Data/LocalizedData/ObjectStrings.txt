@@ -1,0 +1,5 @@
+﻿Behavior/EditorPrefix/WanderingUnit=[WanderingUnit]
+Behavior/EditorPrefix/WanderingUnit_WanderingId=[WanderingUnit]
+Behavior/Name/WanderingUnit=WanderingUnit
+Behavior/Name/WanderingUnit_WanderingId=WanderingUnit_WanderingId
+Effect/EditorPrefix/WanderingUnit_Attack_CP=[WanderingUnit]

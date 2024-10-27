@@ -1,0 +1,244 @@
+include "TriggerLibs/NativeLib"
+include "LibA83BCBE2"
+include "Lib831CF378"
+include "Lib87A5C7D8"
+include "Lib87A5C7D8"
+
+include "LibB5016834_h"
+
+//--------------------------------------------------------------------------------------------------
+// Library: UnitGroups
+//--------------------------------------------------------------------------------------------------
+// External Library Initialization
+void libB5016834_InitLibraries () {
+    libNtve_InitVariables();
+    libA83BCBE2_InitVariables();
+    lib831CF378_InitVariables();
+}
+
+// Variable Initialization
+bool libB5016834_InitVariables_completed = false;
+
+void libB5016834_InitVariables () {
+    int init_i;
+    int init_j;
+    int init_i1;
+
+    if (libB5016834_InitVariables_completed) {
+        return;
+    }
+
+    libB5016834_InitVariables_completed = true;
+
+    for (init_i = 0; init_i <= 10; init_i += 1) {
+        for (init_j = 0; init_j <= 20; init_j += 1) {
+            libB5016834_gv_UnitGroup__Record[init_i][init_j].lv_UnitTypeHighestId = -1;
+        }
+    }
+    for (init_i = 0; init_i <= 20; init_i += 1) {
+        libB5016834_gv_UnitGroups__Record[init_i].lv_UnitGroup_HighestId = -1;
+        libB5016834_gv_UnitGroups__Record[init_i].lv_Family_HighestId = -1;
+        for (init_i1 = 0; init_i1 <= 20; init_i1 += 1) {
+            libB5016834_gv_UnitGroups__Record[init_i].lv_Family_Pool_Id[init_i1] = -1;
+        }
+        for (init_i1 = 0; init_i1 <= 20; init_i1 += 1) {
+            libB5016834_gv_UnitGroups__Record[init_i].lv_FamilyName[init_i1] = "";
+        }
+    }
+}
+
+// Presets
+// Functions
+trigger auto_libB5016834_gf_UnitGroups__SpawnUnitThread_Trigger = null;
+int auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_HandlerId;
+string auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_UnitType;
+int auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_Owner;
+point auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_SourcePoint;
+fixed auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_SourceRadius;
+fixed auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_BirthTime;
+int auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_SpawnType;
+unit auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_TargetUnit;
+int auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_TargetPlayer;
+
+void libB5016834_gf_UnitGroups__SpawnUnitThread (int lp_HandlerId, string lp_UnitType, int lp_Owner, point lp_SourcePoint, fixed lp_SourceRadius, fixed lp_BirthTime, int lp_SpawnType, unit lp_TargetUnit, int lp_TargetPlayer) {
+    auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_HandlerId = lp_HandlerId;
+    auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_UnitType = lp_UnitType;
+    auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_Owner = lp_Owner;
+    auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_SourcePoint = lp_SourcePoint;
+    auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_SourceRadius = lp_SourceRadius;
+    auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_BirthTime = lp_BirthTime;
+    auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_SpawnType = lp_SpawnType;
+    auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_TargetUnit = lp_TargetUnit;
+    auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_TargetPlayer = lp_TargetPlayer;
+
+    if (auto_libB5016834_gf_UnitGroups__SpawnUnitThread_Trigger == null) {
+        auto_libB5016834_gf_UnitGroups__SpawnUnitThread_Trigger = TriggerCreate("auto_libB5016834_gf_UnitGroups__SpawnUnitThread_TriggerFunc");
+    }
+
+    TriggerExecute(auto_libB5016834_gf_UnitGroups__SpawnUnitThread_Trigger, false, false);
+}
+
+bool auto_libB5016834_gf_UnitGroups__SpawnUnitThread_TriggerFunc (bool testConds, bool runActions) {
+    int lp_HandlerId = auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_HandlerId;
+    string lp_UnitType = auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_UnitType;
+    int lp_Owner = auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_Owner;
+    point lp_SourcePoint = auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_SourcePoint;
+    fixed lp_SourceRadius = auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_SourceRadius;
+    fixed lp_BirthTime = auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_BirthTime;
+    int lp_SpawnType = auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_SpawnType;
+    unit lp_TargetUnit = auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_TargetUnit;
+    int lp_TargetPlayer = auto_libB5016834_gf_UnitGroups__SpawnUnitThread_lp_TargetPlayer;
+
+    // Variable Declarations
+    unit lv_unitLastCreated;
+
+    // Automatic Variable Declarations
+    int autoC00F63A2_val;
+
+    // Variable Initialization
+
+    // Implementation
+    autoC00F63A2_val = lp_SpawnType;
+    if (autoC00F63A2_val == libB5016834_ge_UnitGroups__SpawnType_SpawnFromEgg) {
+        lv_unitLastCreated = lib87A5C7D8_gf_UnitSpawn_SpawnFromEgg(lp_UnitType, lp_Owner, lp_BirthTime, RegionRandomPoint(RegionCircle(lp_SourcePoint, lp_SourceRadius)));
+    }
+    else if (autoC00F63A2_val == libB5016834_ge_UnitGroups__SpawnType_SpawnFromEggCircle) {
+        lv_unitLastCreated = lib87A5C7D8_gf_UnitSpawn_SpawnFromEggCircleLaunch(lp_UnitType, lp_Owner, lp_BirthTime, lp_SourcePoint, lp_SourceRadius);
+    }
+    else if (autoC00F63A2_val == libB5016834_ge_UnitGroups__SpawnType_SpawnFromVoid) {
+        lv_unitLastCreated = lib87A5C7D8_gf_UnitSpawn_SpawnFromVoidCircleLaunch(lp_UnitType, lp_Owner, lp_SourcePoint, lp_SourceRadius);
+    }
+    else {
+        UnitCreate(1, lp_UnitType, 0, lp_Owner, RegionRandomPoint(RegionCircle(lp_SourcePoint, lp_SourceRadius)), libNtve_gf_RandomAngle());
+        lv_unitLastCreated = UnitLastCreated();
+    }
+    UnitBehaviorAddPlayer(lv_unitLastCreated, "WanderingUnit_WanderingId", lp_Owner, lp_HandlerId);
+    UnitBehaviorAddPlayer(lv_unitLastCreated, "WanderingUnit", lp_Owner, 1);
+    if ((lp_TargetUnit != null)) {
+    }
+
+    if ((lp_TargetPlayer != -1)) {
+        lib831CF378_gf_UnitTargetPlayer__SetTargetPlayerToUnit(lv_unitLastCreated, lp_TargetPlayer);
+    }
+
+    return true;
+}
+
+fixed libB5016834_gf_UnitGroups_CreateNewGroup (int lp_HandlerId, int lp_Owner, point lp_SpawnPoint, fixed lp_SpawnPointRadius, fixed lp_TargetUnitRadius, playergroup lp_TargetPlayers, unitfilter lp_TargetUnitsFilters, fixed lp_SpawnUnitsTotalValue, int lp_SpawnCountMax, fixed lp_SpawnUnitsMinValue, fixed lp_SpawnUnitsMaxValue, int lp_SpawnType, unit lp_SpawnedUnitsShareTargetUnit, int lp_SpawnedUnitsShareTargetPlayer, fixed lp_SpawnDelayBetweenUnits) {
+    // Variable Declarations
+    int lv_spawnedUnitCount;
+    fixed lv_totalValueLeft;
+    fixed lv_maxValue;
+    int lv_unitId;
+    int lv_targetPlayer;
+    unit lv_targetUnit;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_totalValueLeft = lp_SpawnUnitsTotalValue;
+    lv_maxValue = lp_SpawnUnitsMaxValue;
+    lv_targetPlayer = -1;
+
+    // Implementation
+    if ((lp_SpawnUnitsMaxValue > lp_SpawnUnitsTotalValue)) {
+        lv_maxValue = lp_SpawnUnitsTotalValue;
+    }
+
+    lv_unitId = 0;
+    while ((lv_unitId != -1) && ((lp_SpawnCountMax == 0) || (lp_SpawnCountMax > lv_spawnedUnitCount))) {
+        libB5016834_gf_UnitGroups__SpawnUnitThread(lp_HandlerId, "DestructibleSignsIcons", lp_Owner, lp_SpawnPoint, lp_SpawnPointRadius, 8.0, lp_SpawnType, lp_SpawnedUnitsShareTargetUnit, lp_SpawnedUnitsShareTargetPlayer);
+        lv_spawnedUnitCount += 1;
+        lv_totalValueLeft -= 0.0;
+        if ((lv_maxValue > lv_totalValueLeft)) {
+            lv_maxValue = lv_totalValueLeft;
+        }
+
+        lv_unitId = 0;
+    }
+    return lv_totalValueLeft;
+}
+
+fixed libB5016834_gf_UnitGroups_CreateUnits (int lp_HandlerId, int lp_Owner, point lp_SpawnPoint, fixed lp_SpawnPointRadius, fixed lp_TargetUnitRadius, playergroup lp_TargetPlayers, unitfilter lp_TargetUnitsFilters, fixed lp_SpawnUnitsTotalValue, int lp_SpawnCountMax, fixed lp_SpawnUnitsMinValue, fixed lp_SpawnUnitsMaxValue, int lp_SpawnType, unit lp_SpawnedUnitsShareTargetUnit, int lp_SpawnedUnitsShareTargetPlayer, fixed lp_SpawnDelayBetweenUnits) {
+    // Variable Declarations
+    int lv_spawnedUnitCount;
+    fixed lv_totalValueLeft;
+    fixed lv_maxValue;
+    int lv_unitId;
+    int lv_targetPlayer;
+    unit lv_targetUnit;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_totalValueLeft = lp_SpawnUnitsTotalValue;
+    lv_maxValue = lp_SpawnUnitsMaxValue;
+    lv_targetPlayer = -1;
+
+    // Implementation
+    if ((lp_SpawnUnitsMaxValue > lp_SpawnUnitsTotalValue)) {
+        lv_maxValue = lp_SpawnUnitsTotalValue;
+    }
+
+    lv_unitId = 0;
+    while ((lv_unitId != -1) && ((lp_SpawnCountMax == 0) || (lp_SpawnCountMax > lv_spawnedUnitCount))) {
+        libB5016834_gf_UnitGroups__SpawnUnitThread(lp_HandlerId, "DestructibleSignsIcons", lp_Owner, lp_SpawnPoint, lp_SpawnPointRadius, 8.0, lp_SpawnType, lp_SpawnedUnitsShareTargetUnit, lp_SpawnedUnitsShareTargetPlayer);
+        lv_spawnedUnitCount += 1;
+        lv_totalValueLeft -= 0.0;
+        if ((lv_maxValue > lv_totalValueLeft)) {
+            lv_maxValue = lv_totalValueLeft;
+        }
+
+        lv_unitId = 0;
+    }
+    return lv_totalValueLeft;
+}
+
+int libB5016834_gf_getFamilyIdFromPoolId (int lp_UnitGroups_Id, int lp_Pool_Id) {
+    // Automatic Variable Declarations
+    int autoABD064BC_ae;
+    int autoABD064BC_var;
+
+    // Implementation
+    autoABD064BC_ae = libB5016834_gv_UnitGroups__Record[lp_UnitGroups_Id].lv_Family_HighestId;
+    autoABD064BC_var = 0;
+    for ( ; autoABD064BC_var <= autoABD064BC_ae; autoABD064BC_var += 1 ) {
+        if ((libB5016834_gv_UnitGroups__Record[lp_UnitGroups_Id].lv_Family_Pool_Id[autoABD064BC_var] == lp_Pool_Id)) {
+            return autoABD064BC_var;
+        }
+
+    }
+    return -1;
+}
+
+void libB5016834_gf_UnitGroups_SetUnit (int lp_UnitGroups_Id, int lp_Family_Pool_Id, string lp_UnitType, fixed lp_Value, fixed lp_Weight) {
+    // Variable Declarations
+    int lv_familyId;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_familyId = libB5016834_gf_getFamilyIdFromPoolId(lp_UnitGroups_Id, lp_Family_Pool_Id);
+
+    // Implementation
+    if ((lv_familyId != -1)) {
+        libA83BCBE2_gf_StringPool_SetStringType(lp_Family_Pool_Id, (lp_UnitType), lp_Value, lp_Weight);
+    }
+    else {
+        TriggerDebugOutput(1, StringExternal("Param/Value/lib_B5016834_624FC110"), true);
+    }
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+bool libB5016834_InitLib_completed = false;
+
+void libB5016834_InitLib () {
+    if (libB5016834_InitLib_completed) {
+        return;
+    }
+
+    libB5016834_InitLib_completed = true;
+
+    libB5016834_InitLibraries();
+    libB5016834_InitVariables();
+}
+

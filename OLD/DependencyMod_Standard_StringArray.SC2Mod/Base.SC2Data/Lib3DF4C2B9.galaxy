@@ -1,0 +1,166 @@
+include "TriggerLibs/NativeLib"
+
+include "Lib3DF4C2B9_h"
+
+//--------------------------------------------------------------------------------------------------
+// Library: StringArray
+//--------------------------------------------------------------------------------------------------
+// External Library Initialization
+void lib3DF4C2B9_InitLibraries () {
+    libNtve_InitVariables();
+}
+
+// Variable Initialization
+bool lib3DF4C2B9_InitVariables_completed = false;
+
+void lib3DF4C2B9_InitVariables () {
+    int init_i;
+
+    if (lib3DF4C2B9_InitVariables_completed) {
+        return;
+    }
+
+    lib3DF4C2B9_InitVariables_completed = true;
+
+    for (init_i = 0; init_i <= lib3DF4C2B9_gv_StringArray__Record_MaxId; init_i += 1) {
+        lib3DF4C2B9_gv_StringArray__Record[init_i].lv_StringArray_Size = -1;
+    }
+}
+
+// Functions
+string lib3DF4C2B9_gf_StringArray_GetValueById (int lp_Array_Id, int lp_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    if ((lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size < lp_Id)) {
+        return null;
+    }
+
+    return lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Value[lp_Id];
+}
+
+int lib3DF4C2B9_gf_StringArray_GetIdByValue (int lp_Array_Id, string lp_String) {
+    // Automatic Variable Declarations
+    int autoCC962180_ae;
+    int autoCC962180_var;
+
+    // Implementation
+    autoCC962180_ae = lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size;
+    autoCC962180_var = 0;
+    for ( ; autoCC962180_var <= autoCC962180_ae; autoCC962180_var += 1 ) {
+        if ((lp_String == lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Value[autoCC962180_var])) {
+            return autoCC962180_var;
+        }
+
+    }
+    return -1;
+}
+
+int lib3DF4C2B9_gf_StringArray_GetArraySize (int lp_Array_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    return lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size;
+}
+
+int lib3DF4C2B9_gf_StringArray_AddValue_GetId (int lp_Array_Id, string lp_Value) {
+    // Variable Declarations
+    int lv_arraySize;
+
+    // Automatic Variable Declarations
+    const int auto42E44AA3_ae = lib3DF4C2B9_gv_StringArray__Array_MaxId;
+    int auto42E44AA3_var;
+
+    // Variable Initialization
+    lv_arraySize = (lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size + 1);
+
+    // Implementation
+    if ((lv_arraySize > lib3DF4C2B9_gv_StringArray__Array_MaxId)) {
+        return 0;
+    }
+
+    lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size = lv_arraySize;
+    auto42E44AA3_var = 0;
+    for ( ; auto42E44AA3_var <= auto42E44AA3_ae; auto42E44AA3_var += 1 ) {
+        if ((lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Value[auto42E44AA3_var] == null)) {
+            lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Value[auto42E44AA3_var] = lp_Value;
+            return auto42E44AA3_var;
+        }
+
+    }
+    TriggerDebugOutput(1, StringExternal("Param/Value/lib_3DF4C2B9_98B4C69B"), true);
+    return -1;
+}
+
+void lib3DF4C2B9_gf_StringArray_SetValue (int lp_Array_Id, int lp_Id, string lp_Value) {
+    // Variable Declarations
+    int lv_arraySize;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_arraySize = (lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size + 1);
+
+    // Implementation
+    if ((lv_arraySize > lib3DF4C2B9_gv_StringArray__Array_MaxId)) {
+        return ;
+    }
+
+    if ((lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Value[lp_Id] == null)) {
+        lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size = lv_arraySize;
+    }
+
+    if ((lp_Value == null) && (lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Value[lp_Id] != null)) {
+        lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size = (lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size - 1);
+    }
+
+    lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Value[lp_Id] = lp_Value;
+}
+
+void lib3DF4C2B9_gf_StringArray_RemoveValue (int lp_Array_Id, int lp_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    if ((lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Value[lp_Id] != null)) {
+        lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size = (lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size - 1);
+    }
+
+    lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Value[lp_Id] = null;
+}
+
+int lib3DF4C2B9_gf_StringArray_GetUnusedPool () {
+    // Automatic Variable Declarations
+    const int autoAB8D316D_ae = lib3DF4C2B9_gv_StringArray__Record_MaxId;
+    int autoAB8D316D_var;
+
+    // Implementation
+    autoAB8D316D_var = 0;
+    for ( ; autoAB8D316D_var <= autoAB8D316D_ae; autoAB8D316D_var += 1 ) {
+        if ((lib3DF4C2B9_gv_StringArray__Record[autoAB8D316D_var].lv_Metadata_IsUsed == false)) {
+            lib3DF4C2B9_gv_StringArray__Record[autoAB8D316D_var].lv_Metadata_IsUsed = true;
+            return autoAB8D316D_var;
+        }
+
+    }
+    return -1;
+}
+
+void lib3DF4C2B9_gf_StringArray_SetPoolUnused (int lp_Array_Id) {
+    // Automatic Variable Declarations
+    // Implementation
+    lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_Metadata_IsUsed = true;
+    lib3DF4C2B9_gv_StringArray__Record[lp_Array_Id].lv_StringArray_Size = -1;
+}
+
+//--------------------------------------------------------------------------------------------------
+// Library Initialization
+//--------------------------------------------------------------------------------------------------
+bool lib3DF4C2B9_InitLib_completed = false;
+
+void lib3DF4C2B9_InitLib () {
+    if (lib3DF4C2B9_InitLib_completed) {
+        return;
+    }
+
+    lib3DF4C2B9_InitLib_completed = true;
+
+    lib3DF4C2B9_InitLibraries();
+    lib3DF4C2B9_InitVariables();
+}
+

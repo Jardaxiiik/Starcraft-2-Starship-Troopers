@@ -1,0 +1,106 @@
+﻿DocInfo/DescLong=Completely devoid of any description whatsoever.
+DocInfo/DescShort=Any
+DocInfo/Name=Just Another StarCraft II Mod
+Param/Value/lib_8DAE26A7_7D323295=UnitInfo_AddUnit: lastId = 
+Param/Value/lib_8DAE26A7_B3C1AC7C=UnitInfo_GetUnitId_MaxValue: lastId = 
+Param/Value/lib_8DAE26A7_BBB086A6=, MaxValue = 
+Param/Value/lib_8DAE26A7_CFA7EFED=UnitInfo_AddUnit: lastId = 
+Param/Value/lib_8DAE26A7_ED72E088=UnitInfo_AddFamily: lastId = 
+Param/Value/lib_B5016834_117CE7E4=Giantian
+Param/Value/lib_B5016834_EBFB4F53=Eliminate wave of giant flyers.
+Param/Value/lib_F0008B31_0042FE9F=, successfully added
+Param/Value/lib_F0008B31_00529D36=, SlotIdLast = 
+Param/Value/lib_F0008B31_007D3872=, Wave_Id = 
+Param/Value/lib_F0008B31_02BD772B=, randomWeight = 
+Param/Value/lib_F0008B31_0341A26D=, unitId = 
+Param/Value/lib_F0008B31_072C53DF=Wave_RemoveValueRandom: UnitInfo_Id = 
+Param/Value/lib_F0008B31_09039667=, Wave_Id = 
+Param/Value/lib_F0008B31_1180A4A2=Wave__GetRandomSlotId: Has been procked
+Param/Value/lib_F0008B31_15B412B1=, unitId = 
+Param/Value/lib_F0008B31_162BA8A2=, chancesTotal = 
+Param/Value/lib_F0008B31_19CA9F6F=, END
+Param/Value/lib_F0008B31_28275E7B=, Wave_Id = 
+Param/Value/lib_F0008B31_2F822609=, END
+Param/Value/lib_F0008B31_31151154=Wave__RollWaveStrategy_PickUnitIdToSlot: UnitInfo_Id = 
+Param/Value/lib_F0008B31_367C825C=, Wave_Id = 
+Param/Value/lib_F0008B31_3ACD90CE=Wave_IsIdAlreadyInSlots: UnitInfo_Id = 
+Param/Value/lib_F0008B31_3B4020F6=, UnitId added = 
+Param/Value/lib_F0008B31_3D489443=, RETURN 0
+Param/Value/lib_F0008B31_43E8EFE7=, UnitId = 
+Param/Value/lib_F0008B31_48D3C67F=, WaveId = 
+Param/Value/lib_F0008B31_5270A427=, unitId = 
+Param/Value/lib_F0008B31_53C74309=, SlotId = 
+Param/Value/lib_F0008B31_54376F02=, addedValue = 
+Param/Value/lib_F0008B31_552860BB=, ChancesTotal = 
+Param/Value/lib_F0008B31_56D75086=Wave_AddUnit: UnitInfo_Id = 
+Param/Value/lib_F0008B31_57403414=, randomChance = 
+Param/Value/lib_F0008B31_595CA1F3=Wave_AddUnit: UnitInfo_Id = 
+Param/Value/lib_F0008B31_5C0F5DA2=, Wave_Id = 
+Param/Value/lib_F0008B31_5E9818AB=, slotId = 
+Param/Value/lib_F0008B31_6436C24B=, Wave_Id = 
+Param/Value/lib_F0008B31_668A8163=, WaveId = 
+Param/Value/lib_F0008B31_68C564EB=, weightRandom = 
+Param/Value/lib_F0008B31_6C887DA7=Wave_RollWaveStrategy: UnitInfo_Id = 
+Param/Value/lib_F0008B31_6F49DDC1=, SpawnChances = 
+Param/Value/lib_F0008B31_70F887C6=, Wave_Id = 
+Param/Value/lib_F0008B31_71B06BCC=, UnitId = 
+Param/Value/lib_F0008B31_7483FBFF=, unitId = 
+Param/Value/lib_F0008B31_780A6782=, after ignoring Slots
+Param/Value/lib_F0008B31_89B6248E=Wave_AddValue: UnitInfo_Id = 
+Param/Value/lib_F0008B31_8B093A10=, units_lastId = 
+Param/Value/lib_F0008B31_8B1E8625=Wave__SpendValueRandom: UnitInfo_Id = 
+Param/Value/lib_F0008B31_8E418840=, unitId = 
+Param/Value/lib_F0008B31_8E45AAC3=Wave_IsIdAlreadyInSlots: UnitInfo_Id = 
+Param/Value/lib_F0008B31_8F9310DC=, unitValueRemoved = 
+Param/Value/lib_F0008B31_964E5A4E=Wave_GetRandomSlotId: Slots_LastId = 
+Param/Value/lib_F0008B31_98F7FDE5=, Value param = 
+Param/Value/lib_F0008B31_9B6B542D=, unitCount removed = 
+Param/Value/lib_F0008B31_A0918AF7=, UnitValue = 
+Param/Value/lib_F0008B31_A1036676=Wave_RemoveValueRandom: UnitInfo_Id = 
+Param/Value/lib_F0008B31_A375913A=Wave_AddRandomUnit: UnitInfo_Id = 
+Param/Value/lib_F0008B31_A6126134=, SlotId = 
+Param/Value/lib_F0008B31_A776ABB1=, Wave_Id = 
+Param/Value/lib_F0008B31_A96B28DC=, Value param = 
+Param/Value/lib_F0008B31_A9D42FB4=, Wave_Id = 
+Param/Value/lib_F0008B31_AA7A7A22=, unitValueAdded = 
+Param/Value/lib_F0008B31_ADDE8A8E=, UnitValue = 
+Param/Value/lib_F0008B31_AEAEE7C3=, Wave_Id = 
+Param/Value/lib_F0008B31_B04F94DC=, END
+Param/Value/lib_F0008B31_B55B9686=, unitId = 
+Param/Value/lib_F0008B31_B5BA4F32=, Wave_Id = 
+Param/Value/lib_F0008B31_BBBCBB49=, weightCounter = 
+Param/Value/lib_F0008B31_BD52A432=, unitId = 
+Param/Value/lib_F0008B31_BE06B6B7=, return UnitId = 
+Param/Value/lib_F0008B31_BEEC752D=Wave_RollWaveStrategy: UnitInfo_Id = 
+Param/Value/lib_F0008B31_C16BC42C=, slotId = 
+Param/Value/lib_F0008B31_C26743FA=Wave__RollWaveStrategy_PickUnitIdToSlot: UnitInfo_Id = 
+Param/Value/lib_F0008B31_C3B7F493=Wave_GetRandomSlotId: Slots_LastId = 
+Param/Value/lib_F0008B31_C60DD192=, Wave_Id = 
+Param/Value/lib_F0008B31_CA71CBEB=, END
+Param/Value/lib_F0008B31_CCAAED48=, SlotId = 
+Param/Value/lib_F0008B31_D063BF0A=, chancesTotal = 
+Param/Value/lib_F0008B31_D4EDE667=Wave_AddValueRandom: UnitInfo_Id = 
+Param/Value/lib_F0008B31_D519EAA7=, unitId = 
+Param/Value/lib_F0008B31_D6B9F80F=, Units_lastId = 
+Param/Value/lib_F0008B31_D86C0721=, slotPointsLeft = 
+Param/Value/lib_F0008B31_D936C225=, isFalse
+Param/Value/lib_F0008B31_DDE3818A=Wave_RemoveValue: UnitInfo_Id = 
+Param/Value/lib_F0008B31_DE543501=, isTrue
+Param/Value/lib_F0008B31_DEC6F01B=, END
+Param/Value/lib_F0008B31_E6A9D60D=Wave__RollWaveStrategy_PickUnitIdToSlot: UnitInfo_Id = 
+Param/Value/lib_F0008B31_E9F8BDE7=, valueLeftovers = 
+Param/Value/lib_F0008B31_EBDD8C06=, max units added!
+Param/Value/lib_F0008B31_EC146C3A=, Wave_Id = 
+Param/Value/lib_F0008B31_EFC10F90=Wave_AddRandomUnit: UnitInfo_Id = 
+Param/Value/lib_F0008B31_F22C4979=, SlotIdLast = 
+Param/Value/lib_F0008B31_F25601F8=, WaveId = 
+Param/Value/lib_F0008B31_F2716109=Wave_GetRandomSlotId: UnitInfo_Id = 
+Param/Value/lib_F0008B31_F2A63EDB=, UnitId -1 or max unit cap reached!
+Param/Value/lib_F0008B31_F4498798=, Wave_Id = 
+Param/Value/lib_F0008B31_F4C22B90=, totalWeight = 
+Param/Value/lib_F0008B31_F5FFA92D=, SlotIdMinusOne = 
+Param/Value/lib_F0008B31_FB84B26C=, weightCounter = 
+Param/Value/lib_F0008B31_FB8D108D=, unitCount added = 
+Param/Value/lib_F0008B31_FC029F6C=, WaveId = 
+Param/Value/lib_F0008B31_FD1258CF=, RETURN 0
+Param/Value/lib_F0008B31_FF763A7A=, removedValue = 

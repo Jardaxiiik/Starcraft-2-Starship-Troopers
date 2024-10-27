@@ -1,0 +1,10 @@
+﻿DocInfo/DescLong=Completely devoid of any description whatsoever.
+DocInfo/DescShort=Any
+DocInfo/Name=Just Another StarCraft II Mod
+Param/Value/lib_A83BCBE2_2A159BF8=, maxValueId = 
+Param/Value/lib_A83BCBE2_3494335C=UnitPool_GetMinValueId: -1, 
+Param/Value/lib_A83BCBE2_740F69AE=, MinValue = 
+Param/Value/lib_A83BCBE2_9BB04221=, MaxValue = 
+Param/Value/lib_A83BCBE2_A5CB6FBF=UnitPool_GetMaxValueId: -1, 
+Param/Value/lib_A83BCBE2_C404D297=UnitPool_GetUnitIdByRandom: MinValueId = 
+Param/Value/lib_A83BCBE2_C43EB519=, totalWeight = 

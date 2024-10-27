@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DocInfo>
+    <Dependencies>
+        <Value>file:Mods\DependencyMod_Standard_StringPool.SC2Mod</Value>
+        <Value>file:Mods\DependencyMod_Standard_UnitTargetPlayer.SC2Mod</Value>
+        <Value>file:Mods\DependencyMod_Standard_UnitSpawn_EggAndVoid_liberty.SC2Mod</Value>
+    </Dependencies>
+</DocInfo>
